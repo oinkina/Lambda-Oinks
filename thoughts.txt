@@ -1,0 +1,34 @@
+===============================
+Ideas for topics to post about:
+
+* technical posts on neural nets and/or math
+* being female in a community with a highly skewed gender ratio
+* thoughts on how to learn independently 
+* how I emancipated and left home (with my parents not realizing I was out of the city until weeks later)
+     * issues with being under 18 and not being treated as a real person by lots of bureaucratic things 
+     * issues with not being in high school
+     * what it's like being financially independent at 17 and living on as little money as possible
+* what it was like being religiously Jewish vs. now
+* adventures I'm having - just like what my daily life is like now, and how that contrasts to what it is like for many other high school seniors and how I'm learning way more
+* having fibromylagia and what that's like since it's an "invisible disease"
+ 
+
+===============
+Specific posts:
+
+* Hello, World!
+* Blog setup - hakyll & bootstrap; people discouraging me but satisfaction of building myself
+* How great Double Union is; GPG Keys and Tea Party!
+* Dario math birthday cookies
+* Magic of UNIX and IRC 
+* Using Stanford servers - how to install without sudo access
+* neural nets for the uninitiated
+* heurisitcs for neural nets
+* kaggle
+* banach tarski!
+* pi with trains
+* gender ratio issues - first there need to be safe places
+* kashrut and shabbat
+* why I might want to go to college
+* how not having any money changed my perspective
+* how I can't get financial aid through traditional means

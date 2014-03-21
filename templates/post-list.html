@@ -1,0 +1,15 @@
+<ul>
+    $for(posts)$
+        <li class="post_item">
+    		$title$ - $date$ 
+    		<!-- $if(teaser)$ 
+        		<p>Teaser: $teaser$</p>
+        		<a href="$url$">Read more...</a>
+		    $else$ 
+		        $body$ 
+		    $endif$ 	    	
+ -->		</li>
+    $endfor$
+</ul>
+
+
