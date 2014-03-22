@@ -72,19 +72,12 @@ main = hakyll $ do
                     listField "posts" postCtx (return posts)
                     <> constField "title" "Home"
                     <> defaultContext
-{--
-            let item = teaserField "teaser" "content"
-                    <> defaultContext
---}
+
             do
                 x0 <- getResourceBody
                 x1 <- applyAsTemplate indexCtx x0
                 x2 <- loadAndApplyTemplate "templates/default.html" indexCtx x1
-                {--x3 <- loadAndApplyTemplate 
-                    "template/postitem.html" 
-                    (teaserField "teaser" "content" <> defaultContext)
-                    x2--}
-                relativizeUrls x2 --x3
+                relativizeUrls x2
 
     -- no "route" because not writing to /_site 
     -- just want to use templates elsewhere
