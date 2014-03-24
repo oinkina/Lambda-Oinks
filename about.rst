@@ -1,5 +1,6 @@
 ---
 title: About Me
+mathjax: True
 ---
 
 I'm a baby potbellied pig. I'm also an anonymous function. I go oink.
