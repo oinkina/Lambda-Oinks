@@ -31,8 +31,30 @@ instance Monad m => Monoid (MonadMonoid m a) where
   mappend f g = MonadMonoid (f >=> g)
 ```
 
-sed est est. Curabitur lacinia fermentum lorem, elementum malesuada ipsum
-malesuada ut. Donec suscipit elit id leo vehicula mattis non sed leo. Morbi
+```python
+# A few more loops.
+
+# Powers of 2 (for no obvious reason)
+power = 1
+for y in range(0,21):
+    print "2 to the", y, "is", power
+    power = 2 * power
+    
+# Scanning a list.
+fred = ['And', 'now', 'for', 'something', 'completely', 'different.'];
+for i in range(0,len(fred)):
+    print i, fred[i]
+```
+
+<blockquote>
+sed est est. Curabitur lacinia </br>
+fermentum lorem, elementum</br>
+ malesuada ipsum</br>
+malesuada ut. </br>
+Donec suscipit elit</br>
+</blockquote> 
+
+id leo vehicula mattis non sed leo. Morbi
 varius eleifend varius. Nulla vestibulum, neque vitae aliquam eleifend, nisi
 tellus placerat nunc, quis suscipit elit turpis eu tortor. Etiam euismod
 convallis lectus quis venenatis. Phasellus laoreet magna in nibh cursus eu

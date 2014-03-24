@@ -11,12 +11,18 @@ main :: IO ()
 main = hakyll $ do
 
     -- Compress CSS
-    match ("css/*" .||. "bootstrap/css/*") $ do
+    match ("css/*" 
+            .||. "bootstrap/css/*" 
+            .||. "highlight/styles/*") $ do
         route   idRoute
         compile compressCssCompiler
 
     -- Static files
-    match ("bootstrap/js/*" .||. "bootstrap/fonts/*" .||. "images/*") $ do
+    match ("bootstrap/js/*" 
+            .||. "bootstrap/fonts/*" 
+            .||. "images/*"
+            .||. "images/highlight/*" 
+            .||. "highlight/highlight.pack.js") $ do
         route idRoute
         compile copyFileCompiler
 
