@@ -1,13 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Control.Monad          (forM,forM_)
-import           Data.List              (sortBy,isInfixOf)
 import           Data.Monoid            (mappend,(<>),mconcat)
-import           Data.Ord               (comparing)
 import           Hakyll
-import           System.Locale          (defaultTimeLocale)
-import           System.FilePath.Posix  (takeBaseName,takeDirectory
-                                         ,(</>),splitFileName)
 import qualified Data.Map as M
 
 --------------------------------------------------------------------------------
@@ -24,7 +18,7 @@ main = hakyll $ do
     -- Static files
     match ("bootstrap/js/*" .||. "bootstrap/fonts/*" .||. "images/*") $ do
         route idRoute
-        compile $ copyFileCompiler
+        compile copyFileCompiler
 
     -- Copy site icon to `favicon.ico`
     match "images/favicon.ico" $ do
@@ -43,7 +37,7 @@ main = hakyll $ do
         compile $ pandocCompiler
          -- save immediately after pandoc, but before the templates are applied
             >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/post.html" defaultContext
+            >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 
@@ -73,11 +67,10 @@ main = hakyll $ do
                     <> constField "title" "Home"
                     <> defaultContext
 
-            do
-                x0 <- getResourceBody
-                x1 <- applyAsTemplate indexCtx x0
-                x2 <- loadAndApplyTemplate "templates/default.html" indexCtx x1
-                relativizeUrls x2
+            getResourceBody
+                >>= applyAsTemplate indexCtx
+                >>= loadAndApplyTemplate "templates/default.html" indexCtx
+                >>= relativizeUrls
 
     -- no "route" because not writing to /_site 
     -- just want to use templates elsewhere
