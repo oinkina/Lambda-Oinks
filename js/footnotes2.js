@@ -42,9 +42,11 @@ var Footnotes = {
             left:left,
             top:top,
             opacity:0.95,
-            position: "absolute"
-
-            /*color: #777;
+            position: "absolute",
+            /*
+            font-size: 90%;
+            font-style: italic;
+            color: #777;
             background-color: rgba(245, 245, 245, .7);
             */
             });

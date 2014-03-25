@@ -16,11 +16,11 @@ I recently became somewhat obsessed with neural nets. But training a convolution
 Finding More Computing Power
 -------------
 
-I don't attend university or work for a major software company, so I don't easily have computer clusters at my disposal. Luckily, I have friends who attend university![^1]
+I don't attend university nor work for a major software company, so I don't easily have computer clusters at my disposal. Luckily, I have friends who attend university!
 
-[^1]: a footnote!
+A friend gave me his login info for his university. Because I would be ssh'ing in a bunch, I edited my <code>.ssh/config</code> file[^1]:
 
-A friend gave me his login info for his university. I edited my <code>.ssh/config</code> file (stuff in caps is for privacy):
+[^1]: stuff in caps is for privacy; replace with actual info
 
 ```javascript
 Host HOSTNAME
@@ -41,4 +41,5 @@ Python was already installed, but my neural nets code needed [Theano] and its de
 [NumPy]: http://www.numpy.org/
 [SciPy]: http://www.scipy.org/
 [BLAS]: http://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms
+
 

@@ -37,7 +37,7 @@ div#header #navigation a {
 */
 
 body {
-    font-family: 'Computer Modern', 'Droid Sans', Helvetica, Arial, sans-serif;
+    font-family: 'Computer Modern Serif', 'Droid Sans', Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 25px;
 }
@@ -76,4 +76,18 @@ blockquote {
     margin-left: 18px;
     padding: 6px 6px 6px 54px;
     font-size: 14px;
+}
+
+
+a:link {
+    color: rgb(109,109,109);
+}
+a:visited { 
+    color: rgb(109,109,109);
+}
+a:hover {
+    color: rgb(109,109,109);
+}
+a:active {
+    color: rgb(109,109,109);
 }

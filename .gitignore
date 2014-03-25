@@ -12,3 +12,5 @@ cabal.config
 _cache
 _site
 .site3.hs
+thoughts.txt
+update.sh
