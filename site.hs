@@ -31,7 +31,7 @@ main = hakyll $ do
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
             .||. "comments/*"
-            .||. "MathBox.js/**") $ do
+            .||. "js/MathBox.js/**") $ do
         route idRoute
         compile copyFileCompiler
 
