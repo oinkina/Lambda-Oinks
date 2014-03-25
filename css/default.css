@@ -108,3 +108,16 @@ nav {
     -webkit-box-shadow:#555 0 0 10px;
     -moz-box-shadow:0 0 10px #555;
 }
+
+.imgcontainer {
+    width: 200px;
+    height: 200px;
+    margin: 10px auto;
+    display: block;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    margin: 0px auto;
+}
