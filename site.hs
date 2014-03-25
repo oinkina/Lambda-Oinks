@@ -3,6 +3,7 @@
 import           Data.Monoid            (mappend,(<>),mconcat)
 import           Hakyll
 import qualified Data.Map as M
+import           Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 -----RULES-----
@@ -11,34 +12,40 @@ main :: IO ()
 main = hakyll $ do
 
     -- Compress CSS
-    match ("css/*" .||. "bootstrap/css/*") $ do
+    match ("css/*" 
+            .||. "bootstrap/css/*" 
+            .||. "highlight/styles/*") $ do
         route   idRoute
         compile compressCssCompiler
 
     -- Static files
-    match ("bootstrap/js/*" .||. "bootstrap/fonts/*" .||. "images/*") $ do
+    match ("js/*"
+            .||. "bootstrap/js/*" 
+            .||. "bootstrap/fonts/*" 
+            .||. "images/*"
+            .||. "images/highlight/*" 
+            .||. "highlight/highlight.pack.js") $ do
         route idRoute
         compile copyFileCompiler
 
     -- Copy site icon to `favicon.ico`
-    match "images/favicon.ico" $ do
-            route   (constRoute "favicon.ico")
+    match "favicon.ico" $ do
+            route   idRoute
             compile copyFileCompiler
-
 
     match (fromList ["about.rst", "contact.markdown"]) $ do
         route   $ setExtension ".html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+        compile $ pandocCompilerWith myReaderOptions myWriterOptions
+            >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension ".html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith myReaderOptions myWriterOptions
          -- save immediately after pandoc, but before the templates are applied
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> postCtx)
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -49,6 +56,7 @@ main = hakyll $ do
             let archiveCtx =
                     listField "posts" postCtx (return posts)
                     <> constField "title" "Archives"
+                    <> mathCtx
                     <> defaultContext
 
             makeItem ""
@@ -65,6 +73,7 @@ main = hakyll $ do
             let indexCtx =
                     listField "posts" postCtx (return posts)
                     <> constField "title" "Home"
+                    <> mathCtx
                     <> defaultContext
 
             getResourceBody
@@ -92,16 +101,31 @@ match "posts/*.md" $ do
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y"
+    <> mathCtx
     <> defaultContext
+
 
 -- MathJax
 mathCtx :: Context String
 mathCtx = field "mathjax" $ \item -> do
-  metadata <- getMetadata $ itemIdentifier item
-  return $ if "mathjax" `M.member` metadata
-           then "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
-           else ""
+    metadata <- getMetadata $ itemIdentifier item
+    return $ if "mathjax" `M.member` metadata
+             then "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
+             else ""
 
+
+myReaderOptions :: ReaderOptions
+myReaderOptions = defaultHakyllReaderOptions
+
+myWriterOptions :: WriterOptions
+myWriterOptions = defaultHakyllWriterOptions {
+      writerReferenceLinks = True
+    , writerHtml5 = True
+    , writerHighlight = True
+    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+    }
+
+{-
 -- metaKeywordContext will return a Context containing a String
 metaKeywordContext :: Context String
 -- can be reached using $metaKeywords$ in the templates
@@ -117,3 +141,4 @@ metaKeywordContext = field "metaKeywords" $ \item -> do
     where
       showMetaTags t = "<meta name=\"keywords\" content=\""
                        ++ t ++ "\">\n"
+-}

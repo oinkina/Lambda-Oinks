@@ -2,6 +2,7 @@
 title: Rosa Rosa Rosam
 date: 2012-10-07
 author: Ovidius
+mathjax: on
 ---
 
 Suspendisse pharetra ullamcorper sem et auctor. Suspendisse vitae tellus eu
