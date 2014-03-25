@@ -16,7 +16,8 @@ main = hakyll $ do
             .||. "bootstrap/css/*" 
             .||. "highlight/styles/*"
             .||. "fonts/Serif/cmun-serif.css"
-            .||. "fonts/Serif-Slanted/cmun-serif-slanted.css") $ do
+            .||. "fonts/Serif-Slanted/cmun-serif-slanted.css"
+            .||. "/comments/inlineDisqussions.css") $ do
         route   idRoute
         compile compressCssCompiler
 
@@ -28,7 +29,8 @@ main = hakyll $ do
             .||. "images/highlight/*" 
             .||. "highlight/highlight.pack.js"
             .||. "fonts/Serif/*"
-            .||. "fonts/Serif-Slanted/*") $ do
+            .||. "fonts/Serif-Slanted/*"
+            .||. "comments/*") $ do
         route idRoute
         compile copyFileCompiler
 

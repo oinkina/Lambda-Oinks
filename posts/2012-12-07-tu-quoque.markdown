@@ -9,7 +9,16 @@ TEASER WOOOO
 
 <!--more-->
 
-mollis quis convallis sem laoreet. Nulla id libero ac erat varius laoreet. Proin
+mollis quis convallis sem laoreet. Nulla id 
+
+<script>
+  disqus_shortname = 'your_disqus_shortname';
+  jQuery(document).ready(function() {
+    jQuery("p").inlineDisqussions();
+  });
+</script>
+
+libero ac erat varius laoreet. Proin
 
 
 Some math:
