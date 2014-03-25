@@ -7,27 +7,40 @@ mathjax: on
 
 Yay, it's a blog!
 
-How?
+How was Lambda Oinks made?
 ------
-Of course, being me, I decided not to opt for an easy ready-made option like [Medium] or [WordPress]. Instead, I went with what all the cool kids[^1] are using: [Hakyll], 'cuz Haskell.
+Of course, being me, I decided to opt out of an easy, ready-made blogging platform, like [Medium] or [WordPress]. Instead, I went with what all the cool kids[^1] are using: [GitHub Pages] for hosting, and [Hakyll] for static site generation---'cuz, Haskell. (More on how this blog was made [later].)
+
+[^1]: I was inspired by [Davidad], and he's cool, so there.
 
 [Medium]:https://medium.com/
 [WordPress]:http://wordpress.org/
+[GitHub Pages]:http://pages.github.com/
 [Hakyll]:http://jaspervdj.be/hakyll/
-[^1]: admittedly, for an odd definition of "cool" 
+[later]:http://oinkina.github.io/posts/2014-03-25-creating-lambda-oinks.html
+[Davidad]:http://davidad.github.io/
 
 <!--more-->
-What?
+
+What is Lambda Oinks?
 ------
-* technical posts on neural nets and/or math
+
+This is a blog for all things lambda and oinks. More concretely, I plan to post about technical stuff[^2] and personal thoughts. I'm using the pseudonym "Oinkina" so that I can write more freely. 
+
+[^2]: "lambda" as in Haskell, math, and anonymous functions, geddit? 
+
+Here are some of the general topics I intend to cover. It will be interesting to see how this changes:
+
+* math and neural networks
 * being female in a community with a highly skewed gender ratio
-* thoughts on how to learn independently 
-* how I emancipated and left home (with my parents not realizing I was out of the city until weeks later)
-     * issues with being under 18 and not being treated as a real person by lots of bureaucratic things 
-     * issues with not being in high school
-     * what it's like being financially independent at 17 and living on as little money as possible
-* what it was like being religiously Jewish vs. now
-* adventures I'm having - just like what my daily life is like now, and how that contrasts to what it is like for many other high school seniors and how I'm learning way more
+* thoughts on how to learn independently (I've been out of school since 10th grade)
+* being an emancipated minor
+* what it was like being religiously Jewish
+* daily adventures I'm having and how my life compares to my life a year ago
 
 Why?
-____
+-------
+
+I love to write. Some days I dump out thousands of words just to get my thoughts out of my head . 
+
+My life has taken such a change in the past few months that I feel 
