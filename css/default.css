@@ -38,7 +38,7 @@ div#header #navigation a {
 
 body {
     font-family: 'CMS', 'Droid Sans', Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 25px;
     text-align: justify;
 }
@@ -58,7 +58,6 @@ h2 {
 
 div.info {
     color: #555;
-    font-size: 14px;
     font-style: italic;
 }
 
@@ -79,7 +78,7 @@ blockquote {
     font-style: italic;
     margin-left: 18px;
     padding: 6px 6px 6px 54px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 a:link {
@@ -96,5 +95,5 @@ a:active {
 }
 
 nav {
-    font-size: 17px;
+    font-size: 18px;
 }
