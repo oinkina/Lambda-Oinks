@@ -77,6 +77,7 @@
                     <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
                     using <a href="http://getbootstrap.com/">Bootstrap</a>, 
                     <a href="http://www.mathjax.org/">MathJax</a>,
+                    <a href="http://disqus.com/">Disqus</a>,
                     <a href="http://highlightjs.org/">Highlight.js</a>, 
                     and <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/#fn:275.examples">Footnotes.js</a>.
                 </div>
@@ -93,6 +94,26 @@
     <script>hljs.initHighlightingOnLoad();</script>
 
     <script src="/js/footnotes2.js"></script>
+
+    <script src="/comments/inlineDisqussions.js"></script>
+
+    <script src="comments/inlineDisqussions.js"></script>
+
+    <script type="text/javascript">
+        var disqus_shortname = 'lambdaoinks'; 
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+    <script>
+        disqus_shortname = 'lambdaoinks';
+        jQuery(document).ready(function() {
+            jQuery("p").inlineDisqussions();
+        });
+    </script>
     
     <noscript>Enable JavaScript for Disqus comments and other cool stuff.</noscript>
 
