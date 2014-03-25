@@ -14,7 +14,9 @@ main = hakyll $ do
     -- Compress CSS
     match ("css/*" 
             .||. "bootstrap/css/*" 
-            .||. "highlight/styles/*") $ do
+            .||. "highlight/styles/*"
+            .||. "fonts/Serif/cmun-serif.css"
+            .||. "fonts/Serif-Slanted/cmun-serif-slanted.css") $ do
         route   idRoute
         compile compressCssCompiler
 
@@ -24,7 +26,9 @@ main = hakyll $ do
             .||. "bootstrap/fonts/*" 
             .||. "images/*"
             .||. "images/highlight/*" 
-            .||. "highlight/highlight.pack.js") $ do
+            .||. "highlight/highlight.pack.js"
+            .||. "fonts/Serif/*"
+            .||. "fonts/Serif-Slanted/*") $ do
         route idRoute
         compile copyFileCompiler
 

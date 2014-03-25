@@ -37,19 +37,23 @@ div#header #navigation a {
 */
 
 body {
-    font-family: 'Computer Modern Serif', 'Droid Sans', Helvetica, Arial, sans-serif;
+    font-family: 'CMS', 'Droid Sans', Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 25px;
+    text-align: justify;
 }
 
 h1 {
-    font-family: 'Computer Modern', 'Droid Serif', Georgia, Times, serif;
+    font-family: 'CMS', 'Droid Serif', Georgia, Times, serif;
     font-size: 49px;
     line-height: 65px;
+    text-align: left;
 } 
 
 h2 {
-    font-size: 20px;
+    font-size: 30px
+    font-style: bold;
+    text-align: left;
 }
 
 div.info {
@@ -78,7 +82,6 @@ blockquote {
     font-size: 14px;
 }
 
-
 a:link {
     color: rgb(109,109,109);
 }
@@ -90,4 +93,8 @@ a:hover {
 }
 a:active {
     color: rgb(109,109,109);
+}
+
+nav {
+    font-size: 17px;
 }
