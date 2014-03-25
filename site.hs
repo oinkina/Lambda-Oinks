@@ -19,7 +19,8 @@ main = hakyll $ do
         compile compressCssCompiler
 
     -- Static files
-    match ("bootstrap/js/*" 
+    match ("js/*"
+            .||. "bootstrap/js/*" 
             .||. "bootstrap/fonts/*" 
             .||. "images/*"
             .||. "images/highlight/*" 
@@ -28,15 +29,14 @@ main = hakyll $ do
         compile copyFileCompiler
 
     -- Copy site icon to `favicon.ico`
-    match "images/favicon.ico" $ do
-            route   (constRoute "favicon.ico")
+    match "favicon.ico" $ do
+            route   idRoute
             compile copyFileCompiler
-
 
     match (fromList ["about.rst", "contact.markdown"]) $ do
         route   $ setExtension ".html"
         compile $ pandocCompilerWith myReaderOptions myWriterOptions
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
     match "posts/*" $ do
@@ -73,6 +73,7 @@ main = hakyll $ do
             let indexCtx =
                     listField "posts" postCtx (return posts)
                     <> constField "title" "Home"
+                    <> mathCtx
                     <> defaultContext
 
             getResourceBody

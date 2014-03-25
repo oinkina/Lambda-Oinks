@@ -37,13 +37,13 @@ div#header #navigation a {
 */
 
 body {
-    font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+    font-family: 'Computer Modern', 'Droid Sans', Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 25px;
 }
 
 h1 {
-    font-family: 'Droid Serif', Georgia, Times, serif;
+    font-family: 'Computer Modern', 'Droid Serif', Georgia, Times, serif;
     font-size: 49px;
     line-height: 65px;
 } 
@@ -77,4 +77,3 @@ blockquote {
     padding: 6px 6px 6px 54px;
     font-size: 14px;
 }
-
