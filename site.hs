@@ -16,7 +16,7 @@ main = hakyll $ do
             .||. "bootstrap/css/*" 
             .||. "highlight/styles/*"
             .||. "fonts/Serif/cmun-serif.css"
-            .||. "fonts/Serif-Slanted/cmun-serif-slanted.css"
+            .||. "fonts/Serif Slanted/cmun-serif-slanted.css"
             .||. "/comments/inlineDisqussions.css") $ do
         route   idRoute
         compile compressCssCompiler
