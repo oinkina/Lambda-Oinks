@@ -30,6 +30,7 @@ main = hakyll $ do
             .||. "highlight/highlight.pack.js"
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
+            .||. "js/*"
             .||. "comments/*") $ do
         route idRoute
         compile copyFileCompiler
