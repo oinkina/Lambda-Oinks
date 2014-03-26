@@ -22,7 +22,7 @@ main = hakyll $ do
         compile compressCssCompiler
 
     -- Static files
-    match ("js/*"
+    match ("js/*" 
             .||. "bootstrap/js/*" 
             .||. "bootstrap/fonts/*" 
             .||. "images/*"
@@ -111,7 +111,6 @@ postCtx =
     dateField "date" "%B %e, %Y"
     <> mathCtx
     <> defaultContext
-
 
 -- MathJax
 mathCtx :: Context String

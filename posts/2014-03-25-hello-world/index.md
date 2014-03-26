@@ -27,10 +27,13 @@ What is Lambda Oinks?
 
 This is a blog for all things lambda and oinks. More concretely, I plan to post about technical stuff[^2] and personal thoughts. I'm using the pseudonym "Oinkina" so that I can write more freely[^3]. I'm ideologically in favor of having my thoughts be public, but I'm generally a private person, so using a pseudonym feels like a good compromise. 
 
-[^2]: "lambda" as in Haskell, math, and <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous functions</a>, geddit? 
+[^2]: "Lambda" as in Haskell, math, and <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous functions</a>, geddit? 
 [^3]: If you know who I am, please refrain from exposing my real identity.
 
-Here are some of the general topics I intend to cover. 
+Here are some of the general topics I intend to cover: 
+<div class="floatrightimgcontainer">
+<img src="/posts/2014-03-25-hello-world/writing.gif" alt="Pusheen writing" style=""></div>
+<div class="spaceafterimg"></div>
 
 * math and neural networks
 * being female in a community with a highly skewed gender ratio
@@ -46,10 +49,6 @@ Why?
 
 My life has undergone many big changes in the past few months. Sometimes I feel like my life is a story, and I string chapters around my fingers as time keeps passing by.
 
-<div class="imgcontainer">
-<img src="/posts/2014-03-25-hello-world/writing.gif" alt="Pusheen writing">
-</div>
-
 I love to write. Some days I dump out thousands of words just to get the thoughts out of my head[^4]. It seems somewhat wasteful to keep it all private. A lot of this content will come from private musings and brainstorms, so please give me the benefit of the doubt and assume good intentions.
 
 [^4]: <a href="http://750words.com/">750 Words</a> is a wonderful website for this.
@@ -58,4 +57,4 @@ I imagine some of these stories might be at least amusing to others. Despite my 
 
 [biased perspective]:http://en.wikipedia.org/wiki/Confirmation_bias 
 
-So, now I'm using Lambda Oinks!
+So, now I'm blogging.
