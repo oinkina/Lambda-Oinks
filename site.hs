@@ -4,7 +4,7 @@ import           Data.Monoid            (mappend,(<>),mconcat)
 import           Hakyll
 import qualified Data.Map as M
 import           Text.Pandoc.Options
-
+import           Data.Maybe (fromMaybe)
 --------------------------------------------------------------------------------
 -----RULES-----
 
@@ -31,7 +31,8 @@ main = hakyll $ do
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
             .||. "comments/*"
-            .||. "js/MathBox.js/**") $ do
+            .||. "js/MathBox.js/**"
+            .||. "posts/**" .&&. (complement "posts/*/*.md")) $ do
         route idRoute
         compile copyFileCompiler
 
@@ -40,13 +41,13 @@ main = hakyll $ do
             route   idRoute
             compile copyFileCompiler
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
+    match (fromList ["about.rst", "contact.md"]) $ do
         route   $ setExtension ".html"
         compile $ pandocCompilerWith myReaderOptions myWriterOptions
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
-    match "posts/*" $ do
+    match "posts/*/index.md" $ do
         route $ setExtension ".html"
         compile $ pandocCompilerWith myReaderOptions myWriterOptions
          -- save immediately after pandoc, but before the templates are applied
@@ -58,10 +59,10 @@ main = hakyll $ do
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*/index.md"
 
             let archiveCtx =
-                    listField "posts" postCtx (return posts)
+                    listField "posts" (urlstripCtx <> postCtx) (return posts)
                     <> constField "title" "Archives"
                     <> mathCtx
                     <> defaultContext
@@ -75,10 +76,10 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*/index.md"
             
             let indexCtx =
-                    listField "posts" postCtx (return posts)
+                    listField "posts" (urlstripCtx <> postCtx) (return posts)
                     <> constField "title" "Home"
                     <> mathCtx
                     <> defaultContext
@@ -120,6 +121,12 @@ mathCtx = field "mathjax" $ \item -> do
              then "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
              else ""
 
+-- Gets rid of "/index.html" from posts
+urlstripCtx :: Context a
+urlstripCtx = field "url" $ \item -> do
+    route <- getRoute (itemIdentifier item)
+    return $ fromMaybe "/" $ 
+        fmap (reverse . drop 10 . reverse) route
 
 myReaderOptions :: ReaderOptions
 myReaderOptions = defaultHakyllReaderOptions
@@ -131,6 +138,7 @@ myWriterOptions = defaultHakyllWriterOptions {
     , writerHighlight = True
     , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
     }
+
 
 {-
 -- metaKeywordContext will return a Context containing a String

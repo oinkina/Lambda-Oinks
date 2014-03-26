@@ -47,7 +47,7 @@ Why?
 My life has undergone many big changes in the past few months. Sometimes I feel like my life is a story, and I string chapters around my fingers as time keeps passing by.
 
 <div class="imgcontainer">
-<img src="/images/2014-03-25-hello-world-writing.gif" alt="Pusheen writing">
+<img src="/posts/2014-03-25-hello-world/writing.gif" alt="Pusheen writing">
 </div>
 
 I love to write. Some days I dump out thousands of words just to get the thoughts out of my head[^4]. It seems somewhat wasteful to keep it all private. A lot of this content will come from private musings and brainstorms, so please give me the benefit of the doubt and assume good intentions.
