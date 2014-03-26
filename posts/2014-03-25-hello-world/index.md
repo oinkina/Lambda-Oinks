@@ -7,7 +7,7 @@ mathjax: on
 
 Yay, it's a blog!
 
-How was Lambda Oinks made?
+How was Lambda Oinks Made?
 ------
 Of course, being me, I decided to opt out of an easy, ready-made blogging platform, like [Medium] or [WordPress]. Instead, I went with what all the cool kids[^1] are using: [GitHub Pages] for hosting, and [Hakyll] for static site generation---'cuz, Haskell. ([More on how this blog was made later].)
 
@@ -46,7 +46,7 @@ Here are some of the general topics I intend to cover:
 
 It will be interesting to see how this changes.
 
-Why?
+Why Blog?
 -----
 
 My life has undergone many big changes in the past few months. Sometimes I feel like my life is a story, and I string chapters around my fingers as time keeps passing by.
