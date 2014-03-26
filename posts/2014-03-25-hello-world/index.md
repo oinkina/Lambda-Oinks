@@ -32,7 +32,9 @@ This is a blog for all things lambda and oinks. More concretely, I plan to post 
 
 Here are some of the general topics I intend to cover: 
 <div class="floatrightimgcontainer">
-<img src="/posts/2014-03-25-hello-world/writing.gif" alt="Pusheen writing" style=""></div>
+<img src="/posts/2014-03-25-hello-world/writing.gif" alt="Pusheen writing" style="">
+<div class="caption">Pusheen actually goes "oink."</div>
+</div>
 <div class="spaceafterimg"></div>
 
 * math and neural networks
