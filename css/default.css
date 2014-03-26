@@ -1,64 +1,33 @@
-/*
-body {
-    color: black;
-    font-size: 16px;
-    margin: 0px auto 0px auto;
-    width: 600px;
-}
-
-
-div#header {
-    border-bottom: 2px solid black;
-    margin-bottom: 30px;
-    padding: 12px 0px 12px 0px;
-}
-
-div#logo a {
-    color: black;
-    float: left;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-
-div#header #navigation {
-    text-align: right;
-}
-
-div#header #navigation a {
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    margin-left: 12px;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-*/
-
 body {
     font-family: 'CMS', 'Droid Sans', Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 25px;
-    text-align: justify;
+    text-align: left;
+}
+
+@media only screen and (min-width: 768px){
+    body{
+        text-align: justify;
+    }
 }
 
 h1 {
     font-family: 'CMS', 'Droid Serif', Georgia, Times, serif;
-    font-size: 49px;
+    font-size: 300%;
     line-height: 65px;
     text-align: left;
 } 
 
 h2 {
-    font-size: 30px
+    font-size: 150%;
     font-weight: bold;
     text-align: left;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 div.info {
     color: #555;
-    font-size: 14px;
     font-style: italic;
 }
 
@@ -75,11 +44,37 @@ div.info {
 }
 
 blockquote {
-    background: #e6e6e6 url("../images/quote-background.png") no-repeat left top;
-    font-style: italic;
+    background: rgb(245,245,245) url("../images/quoteblock.png") no-repeat left top;
+    font-family: 'CMSS';
     margin-left: 18px;
     padding: 6px 6px 6px 54px;
-    font-size: 14px;
+    font-size: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+pre {
+    margin-left: 18px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: none;
+    
+    white-space: pre-wrap;                 /* CSS3 browsers  */
+    white-space: -moz-pre-wrap !important; /* 1999+ Mozilla  */
+    white-space: -pre-wrap;                /* Opera 4 thru 6 */
+    white-space: -o-pre-wrap;              /* Opera 7 and up */
+    word-wrap: break-word;                 /* IE 5.5+ and up */
+}
+
+blockquote:hover{
+    font-size: 120%;
+    font-weight: bold;
+}
+
+pre:hover{
+    font-size: 120%;
 }
 
 a:link {
@@ -96,7 +91,7 @@ a:active {
 }
 
 nav {
-    font-size: 17px;
+    font-size: 18px;
 }
 
 #footnotediv {
@@ -108,4 +103,35 @@ nav {
     box-shadow:#555 0 0 10px;
     -webkit-box-shadow:#555 0 0 10px;
     -moz-box-shadow:0 0 10px #555;
+}
+
+.centerimgcontainer {
+    width: 200px;
+    height: 200px;
+    margin: 30px auto;
+    display: block;
+}
+
+/* To float right, include <div class="spaceafterimg"></div>*/
+.floatrightimgcontainer {
+    width: 200px;
+    height: 200px;
+    margin: 0px 0px 30px 30px;
+    float: right;
+}
+
+.spaceafterimg{
+    display: block;
+    height: 12px;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    margin: 10px auto;
+}
+
+.caption{
+    font-size: 90%;
+    text-align: center;
 }

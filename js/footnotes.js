@@ -32,7 +32,7 @@ var Footnotes = {
         div.css({
             position:'absolute',
             width:'400px',
-            opacity:0.9,
+            opacity:0.95,
         });
         $(document.body).append(div);
 

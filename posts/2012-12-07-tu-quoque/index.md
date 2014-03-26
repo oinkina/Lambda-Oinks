@@ -9,17 +9,13 @@ TEASER WOOOO
 
 <!--more-->
 
-mollis quis convallis sem laoreet. Nulla id 
-
-<script>
-  disqus_shortname = 'your_disqus_shortname';
-  jQuery(document).ready(function() {
-    jQuery("p").inlineDisqussions();
-  });
-</script>
-
+mollis quis convallis sem laoreet. Nulla id
 libero ac erat varius laoreet. Proin
 
+<iframe class="mathbox" src="/js/MathBox.js/examples/Distance.html" width=100% height=500px seamless="seamless"></iframe>
+
+
+<iframe class="mathbox" src="/js/MathBox.js/lambdaoinks/Test1.html" width=100% height=500px seamless="seamless"></iframe>
 
 Some math:
 
