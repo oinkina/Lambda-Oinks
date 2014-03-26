@@ -34,13 +34,13 @@ $body$
 <script type="text/javascript">
     disqus_shortname = 'lambdaoinks';
     jQuery(document).ready(function() {
-        jQuery("p").inlineDisqussions({
+        jQuery("p:not(.footnotes ol li p)").inlineDisqussions({
           identifier: 'disqussion',
           displayCount: true,
-          highlighted: true,
+          highlighted: false,
           position: 'right',
           background: 'white',
-          maxWidth: 300
+          maxWidth: 4000,
         });
     });
 </script>

@@ -236,7 +236,7 @@ var disqus_url;
       animate = {
         "top": el.offset().top,
         "left": el.offset().left + el.outerWidth(),
-        "width": Math.min(parseInt($(window).width() - (el.offset().left + el.outerWidth()), 10), settings.maxWidth)
+        "width": Math.min(parseInt($(window).width() - (el.offset().left + el.outerWidth()), 10) - 80, settings.maxWidth)
       };
     }
     else if (el.attr('data-disqus-position') == 'left') {
