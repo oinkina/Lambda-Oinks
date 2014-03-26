@@ -36,12 +36,20 @@ div.info {
 }
 
 blockquote {
-    background: #e6e6e6 url("../images/quote-background.png") no-repeat left top;
+    background: rgb(245,245,245) url("../images/quoteblock.png") no-repeat left top;
     font-style: italic;
     margin-left: 18px;
     padding: 6px 6px 6px 54px;
     font-size: 16px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
+/*
+blockquote:hover{
+    background-color: rgb(135,135,135) url("../images/quote-background-hover.png") no-repeat left top;
+    color: white;
+}*/
 
 a:link {
     color: rgb(109,109,109);
