@@ -45,6 +45,14 @@ blockquote {
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+
+pre {
+    margin-left: 18px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: none;
+}
 /*
 blockquote:hover{
     background-color: rgb(135,135,135) url("../images/quote-background-hover.png") no-repeat left top;
