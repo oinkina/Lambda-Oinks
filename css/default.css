@@ -53,11 +53,15 @@ pre {
     border-radius: 10px;
     border: none;
 }
-/*
+
 blockquote:hover{
-    background-color: rgb(135,135,135) url("../images/quote-background-hover.png") no-repeat left top;
-    color: white;
-}*/
+    font-size: 120%;
+    font-weight: bold;
+}
+
+pre:hover{
+    font-size: 120%;
+}
 
 a:link {
     color: rgb(109,109,109);
