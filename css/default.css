@@ -26,6 +26,14 @@ h2 {
     margin-bottom: 20px;
 }
 
+h3 {
+    font-size: 115%;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 div.info {
     color: #555;
     font-style: italic;
