@@ -5,10 +5,30 @@ author: Eliana
 mathjax: on
 ---
 
+STUFF FROM HISTORY
+-----------
+
+```bash
+# common python tool:
+122  18:26   wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setu
+p.py
+131  18:30   python ez_setup.py --user
+# download pip, then install it, so that we can 
+# use it to install other python things
+133  18:30   wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+134  18:30   python get-pip.py --user
+# common python tool
+139  18:32   pip install --user virtualenv
+# Necessary for theano:
+142  18:35   pip install --user numpy
+143  18:37   pip install --user scipy
+145  18:46   pip install --user Theano
+```
+
 Motivation
 ------------
 
-I recently became somewhat obsessed with neural nets. But training a convolutional net made normal computer activity tricky. Training two convolutional nets at once would make my laptop freeze up. And forget about training a net with Lin et. al.'s [Network in Network] architecture.
+I've recently become somewhat obsessed with neural nets. But training a convolutional net made normal computer activity tricky. Training two convolutional nets at once would make my laptop freeze up. And forget about training a net with Lin et. al.'s [Network in Network] architecture.
 
 [Network in Network]: http://arxiv.org/abs/1312.4400
 
@@ -34,7 +54,7 @@ and ssh'ed in[^2]:
 [^2]: I couldn't use ssh with an authentication key instead of a password due to server configurations, but that is generally recommended.
 
 ```bash
-$ ssh HOST
+ssh HOST
 ```
 
 Python was already installed, but my neural nets code needed [Theano]. Following the instructions for [easy installation]:
@@ -43,9 +63,9 @@ Python was already installed, but my neural nets code needed [Theano]. Following
 [easy installation]: http://deeplearning.net/software/theano/install_ubuntu.html
 
 ```bash
-$ sudo apt-get install python-numpy python-scipy python-dev python-pip python-nose g++ libopenblas-dev git
-$ [sudo] password for USER:
-$ USER is not allowed to run sudo on HOST.  This incident will be reported.
+sudo apt-get install python-numpy python-scipy python-dev python-pip python-nose g++ libopenblas-dev git
+[sudo] password for USER:
+USER is not allowed to run sudo on HOST.  This incident will be reported.
 ```
 
 Hwrm, right, I don't have sudo access. Sidenote: I'm sure many students messing around with unix have nearly had heart attacks from this message[^3].
