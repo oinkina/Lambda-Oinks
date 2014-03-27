@@ -36,7 +36,6 @@ main = hakyll $ do
         route idRoute
         compile copyFileCompiler
 
-    -- Copy site icon to `favicon.ico`
     match "favicon.ico" $ do
             route   idRoute
             compile copyFileCompiler
@@ -50,7 +49,6 @@ main = hakyll $ do
     match "posts/*/index.md" $ do
         route $ setExtension ".html"
         compile $ pandocCompilerWith myReaderOptions myWriterOptions
-         -- save immediately after pandoc, but before the templates are applied
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> postCtx)
@@ -62,7 +60,7 @@ main = hakyll $ do
             posts <- recentFirst =<< loadAll "posts/*/index.md"
 
             let archiveCtx =
-                    listField "posts" (urlstripCtx <> postCtx) (return posts)
+                    listField "posts" (postCtx) (return posts)
                     <> constField "title" "Archives"
                     <> mathCtx
                     <> defaultContext
@@ -79,7 +77,7 @@ main = hakyll $ do
             posts <- recentFirst =<< loadAll "posts/*/index.md"
             
             let indexCtx =
-                    listField "posts" (urlstripCtx <> postCtx) (return posts)
+                    listField "posts" (postCtx) (return posts)
                     <> constField "title" "Home"
                     <> mathCtx
                     <> defaultContext
@@ -89,19 +87,7 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
 
-    -- no "route" because not writing to /_site 
-    -- just want to use templates elsewhere
     match "templates/*" $ compile templateCompiler
-
-{--
---metadata keywords--
-match "posts/*.md" $ do
-  route $ setExtension "html"
-  compile $ pandocCompiler
-    -- use the template with the current content
-    >>= loadAndApplyTemplate "templates/post.html"
-            (defaultContext <> metaKeywordContext)
---}
 
 --------------------------------------------------------------------------------
 ----- CONTEXTS ------
@@ -110,6 +96,7 @@ postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y"
     <> mathCtx
+    <> urlstripCtx
     <> defaultContext
 
 -- MathJax
@@ -137,22 +124,3 @@ myWriterOptions = defaultHakyllWriterOptions {
     , writerHighlight = True
     , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
     }
-
-
-{-
--- metaKeywordContext will return a Context containing a String
-metaKeywordContext :: Context String
--- can be reached using $metaKeywords$ in the templates
--- Use the current item (markdown file)
-metaKeywordContext = field "metaKeywords" $ \item -> do
-  -- tags contains the content of the "tags" metadata
-  -- inside the item (understand the source)
-  tags <- getMetadataField (itemIdentifier item) "tags"
-  -- if tags is empty return an empty string
-  -- in the other case return
-  --   <meta name="keywords" content="$tags$">
-  return $ maybe "" showMetaTags tags
-    where
-      showMetaTags t = "<meta name=\"keywords\" content=\""
-                       ++ t ++ "\">\n"
--}
