@@ -2,4 +2,6 @@
 title: Contact
 ---
 
-I live in a small hut in the mountains of Kumano Kodō on Kii Hantō and would not like to be contacted.
+Even though I'm an anonymous baby pot-bellied pig, you can still contact me.
+
+lambdaoinks at theemailserviceeveryoneuses
