@@ -17,7 +17,7 @@ Of course, being me, I decided to opt out of an easy, ready-made blogging platfo
 [WordPress]:http://wordpress.org/
 [GitHub Pages]:http://pages.github.com/
 [Hakyll]:http://jaspervdj.be/hakyll/
-[More on how this blog was made later]:http://oinkina.github.io/posts/2014-03-25-creating-lambda-oinks.html
+[More on how this blog was made later]:http://oinkina.github.io/posts/2014-03-25-creating-lambda-oinks
 [Davidad]:http://davidad.github.io/
 
 <!--more-->

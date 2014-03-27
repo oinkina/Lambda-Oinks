@@ -5,6 +5,26 @@ author: Oinkina
 mathjax: on
 ---
 
-Yay, a blog!
-<!--more-->
-jkfldsajfkladsjfkalsdfjkas
+Motivation
+------------
+
+Hakyll
+--------
+
+Bootstrap
+---------
+
+Support for Code (Highlight.js)
+----------
+
+Support for Equations (MathJax)
+---------
+
+3D Math Graphics (MathBox.js)
+--------
+
+Comments (Disqus)
+------------------
+
+Floating Footnotes (Footnotes.js)
+-------------
