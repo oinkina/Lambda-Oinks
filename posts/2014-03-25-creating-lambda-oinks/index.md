@@ -5,8 +5,12 @@ author: Oinkina
 mathjax: on
 ---
 
-Motivation
-------------
+I'm not a programmer.
+
+At least, I don't consider myself to be one. And yet I made this blogging platform.
+
+I'd been thinking 
+Mostly, I just wanted to get my hands dirty with a project. I had sorta-kinda-maybe been thinking about starting a blog for a while, but never had enough motivation to do so. 
 
 Hakyll
 --------
