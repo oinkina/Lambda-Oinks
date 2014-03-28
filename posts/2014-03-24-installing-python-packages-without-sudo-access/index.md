@@ -1,29 +1,9 @@
 ---
-title: Using Remote Servers for Deep Learning, Part 1: Installing Local Python Packages
+title: Using Remote Servers for Deep Learning, Part 1: Installing Python Packages Locally
 date: 2014-03-24
 author: Eliana
 mathjax: on
 ---
-
-STUFF FROM HISTORY
------------
-
-```bash
-# common python tool:
-122  18:26   wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setu
-p.py
-131  18:30   python ez_setup.py --user
-# download pip, then install it, so that we can 
-# use it to install other python things
-133  18:30   wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-134  18:30   python get-pip.py --user
-# common python tool
-139  18:32   pip install --user virtualenv
-# Necessary for theano:
-142  18:35   pip install --user numpy
-143  18:37   pip install --user scipy
-145  18:46   pip install --user Theano
-```
 
 Motivation
 ------------
@@ -40,7 +20,7 @@ I don't attend university nor work for a major software company, so I don't easi
 
 A friend gave me his login info for his university. Because I would be ssh'ing in a bunch, I edited my <code>.ssh/config</code> file[^1]:
 
-[^1]: stuff in caps is for privacy; replace with actual info
+[^1]: Stuff in caps is for privacy; replace with actual info.
 
 ```haskell
 Host HOST
@@ -67,9 +47,9 @@ USER is not allowed to run sudo on HOST.  This incident will be reported.
 
 Hwrm, right, I don't have sudo access. Sidenote: I'm sure many students messing around with unix have nearly had heart attacks from this message[^3].
 
-[^3]: [relevant xkcd]
+[^3]: [Relevant xkcd.]
 
-[relevant xkcd]:http://xkcd.com/838/
+[Relevant xkcd.]:http://xkcd.com/838/
 
 
 
@@ -103,7 +83,7 @@ The program 'easy_install' is currently not installed. You can install it by typ
 sudo apt-get install python-setuptools
 ```
 
-... For added fun, the server didn't have [pip] or [easy_install]. I was back where I started, needing sudo access. 
+...For added fun, the server didn't have [pip] or [easy_install]. I was back where I started, needing sudo access. 
 
 [pip]: https://pypi.python.org/pypi/pip
 [easy_install]: https://pythonhosted.org/setuptools/easy_install.html
@@ -112,7 +92,7 @@ sudo apt-get install python-setuptools
 
 [Another article]: http://forcecarrier.wordpress.com/2013/07/26/installing-pip-virutalenv-in-sudo-free-way/
 
-[^4]: This also works for setuptools (use: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py).
+[^4]: This also works for setuptools.
 
 ```bash
 # Download pip, and install it locally
@@ -123,3 +103,42 @@ pip install --user numpy
 pip install --user scipy
 pip install --user Theano
 ```
+
+And that's it for installing Python packages locally, without sudo access!
+
+
+Setting Up Neural Net Experiments
+-----------------------------------
+
+### Copying Necessary Directories
+
+After I had all the libraries I needed, I needed to copy over the data and library:
+
+```bash
+scp -r neural_net_dir HOST:target/directory
+```
+
+Instead of just running experiments straight within the shell, it's better to run within screen so that experiments can be left running without a connection.
+
+### Basics of Screen
+
+To start a screen session, just enter ```screen``` and you'll be inside a screen session. To keep the session running in screen but detach from it so that it's running in the background, hit _ctrl-a,d_ (_ctrl_+_a_ at the same time, then _d_). To retach to that session from the shell, enter ```screen -rd```[^5]. This is also useful for keeping [irc] running all the time.
+
+[irc]:http://en.wikipedia.org/wiki/Internet_Relay_Chat
+
+[^5]: If you enter just ```screen```, you'll make a new screen session. 
+
+### Running Experiments
+
+All that was left was to actually run experiments within screen. Then I could detach the screen and close the ssh session, and go off and do whatever else I wanted (like write this blog post). To come back later, all I had to do was ssh and screen back in.
+
+
+Future Plans
+--------
+
+Here are some things I'd like to eventually automate:
+
+* Save the the neural net's setup and error rates to a file
+* Save the neural net itself
+* Make a graph of the train and test error rates over time
+* Change the net hyperparameters and architecture, and run a whole bunch of tests at a time and in sequence
