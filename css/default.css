@@ -55,7 +55,7 @@ blockquote {
     background: rgb(245,245,245) url("../images/quoteblock.png") no-repeat left top;
     font-family: 'CMSS';
     margin-left: 18px;
-    padding: 6px 6px 6px 54px;
+    padding: 6px 20px 6px 54px;
     font-size: 16px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -74,15 +74,6 @@ pre {
     white-space: -pre-wrap;                /* Opera 4 thru 6 */
     white-space: -o-pre-wrap;              /* Opera 7 and up */
     word-wrap: break-word;                 /* IE 5.5+ and up */
-}
-
-blockquote:hover{
-    font-size: 120%;
-    font-weight: bold;
-}
-
-pre:hover{
-    font-size: 120%;
 }
 
 a:link {
@@ -119,9 +110,9 @@ nav {
 }
 
 .centerimgcontainer {
-    width: 200px;
-    height: 200px;
-    margin: 30px auto;
+    width: 350px;
+    height: 350px;
+    margin: 30px auto 0px;
     display: block;
 }
 
