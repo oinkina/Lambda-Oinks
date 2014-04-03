@@ -1,3 +1,8 @@
+* mixpanel
+* liveperson
+* kissmetrics
+* google analytics
+
 ===========
 submodules for posts
 * to write a new post, make a repo on github in the lambda-oinks organization
