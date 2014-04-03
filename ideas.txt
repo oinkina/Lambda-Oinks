@@ -1,0 +1,118 @@
+===========
+submodules for posts
+* to write a new post, make a repo on github in the lambda-oinks organization
+* in posts/, git submodule add (ssh-url dir-name-locally) 
+** within posts/ git push origin master
+* cd into it, edit it
+** to commit edits, within the posts/POSTNAME repo:
+*** git status
+*** git add .
+*** git commit -a 
+*** git push origin master
+* first commit, to add the posts/POSTNAME: within the post/ repo:
+** git status
+** git add . 
+** git commit -a  
+* to publish to url and not just github, ./update.sh
+
+==========
+Agenda:
+* TOC with jquery
+* single page
+* posts
+	[x] deep learning thru server 
+	[] self-confidence in programming
+	[] setting up blog
+[] posts in separate repo:
+	[] submodule work to track head
+
+updatepreview.sh --> cp -r ~/lambda-oinks/* ~/lambda-oinks-posts/
+update.sh --> updates oinkina.github.io with _site/*
+
+cp !(posts/*) ~/lambda-oinks-posts
+
+lambda-oinks-preview:
+* has newest lambda-oinks-blog
+* has new posts
+
+lambda-oinks-blog:
+* has publishable blog
+
+oinkina.github.io:
+* just _site/ from lambda-oinks-blog
+
+==============
+ToDo for blog:
+
+
+[] make footer longer for mobile (30?)
+[] make image change to center if mobile
+[] tags
+[] teasers
+[] toc like feynman lectures
+[] pretty scrolly effect like nick liow's blog
+[] photo buttons for archive (with bootstrap)
+[] single page home page like strikingly and ballers dinner
+[x] google analytics
+[] mathjax
+	[x] exists
+	[] make it have field automatically (constField --> didn't actually load even when mathCtx came first)
+	[] example works
+	[] mobius transform 
+[] disqus
+	[x] inline comments
+	[] text of "0 comments"
+[x] separate repo for posts
+[x] latex fonts and headers
+[x] images inline
+[x] footer works for small screens
+[x] justify only when min tablet  
+[x] code and blockquotes magnified
+[x] blockquotes and its image same color as code
+[x] syntax highlighting for code
+[x] floating footnotes
+[x] posts within their own folders
+[] hidden equations in margin - like michael's blog
+	<span id="margin_654456646624" class="marginequation" style="display: none;">
+  <a href="chap1.html#eqtn3" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">$ 
+  \sigma(z) \equiv \frac{1}{1+e^{-z}}$</a>
+	</span>
+
+
+===============================
+Ideas for topics to post about:
+
+* technical posts on neural nets and/or math
+* being female in a community with a highly skewed gender ratio
+* thoughts on how to learn independently 
+* how I emancipated and left home (with my parents not realizing I was out of the city until weeks later)
+     * issues with being under 18 and not being treated as a real person by lots of bureaucratic things 
+     * issues with not being in high school
+     * what it's like being financially independent at 17 and living on as little money as possible
+* what it was like being religiously Jewish vs. now
+* adventures I'm having - just like what my daily life is like now, and how that contrasts to what it is like for many other high school seniors and how I'm learning way more
+* having fibromylagia and what that's like since it's an "invisible disease"
+ 
+
+===============
+Specific posts:
+
+* Hello, World!
+* Blog setup - hakyll & bootstrap; people discouraging me but satisfaction of building myself
+* How great Double Union is; GPG Keys and Tea Party!
+* Dario math birthday cookies
+* Magic of UNIX and IRC 
+* Using Stanford servers - how to install without sudo access
+* neural nets for the uninitiated
+* heurisitcs for neural nets
+* kaggle
+* banach tarski!
+* pi with trains
+* gender ratio issues - first there need to be safe places
+* kashrut and shabbat
+* why I might want to go to college
+* how not having any money changed my perspective
+* how I can't get financial aid through traditional means
+* not getting into ivy leagues
+* why college is not worth debt when financially independent
+* where do groups come from? (category theory)

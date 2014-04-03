@@ -13,5 +13,33 @@ To be clear, I also don't consider myself to be a coder or developer or hacker; 
 
 Friends have told me that I do know how to program, and that's different from being a good or experienced programmer. But I still feel uneasy about it. 
 
-To assuage my lack of self-esteem, 
+So, what's going on here?
+
+1) Lack of self-confidence in programming
+
+2) Discomfort in indentifying as a programmer
+
+
+
+
+Representation of Self
+=======================
+
+At parties, I dread the inveitable conversation starter: "So, what do _you_ do?" 
+
+Paralyzed, I stutter and mumble. "I, uh, well, I guess I like neural nets, I don't know."
+
+Perhaps a well-intentioned rephrasing, in case I hadn't understood: "Where do you work?" 
+
+"I don't."
+
+"Oh, so you're a student?"
+
+"No. Well, kinda. I mean I haven't been in school since 10th grade."
+
+"Oh?" Now it's starting to get interesting. Or perhaps just more awkward.
+
+Introductions
+--------------
+I should have my introduction down to a tee by this point. But every time 
 

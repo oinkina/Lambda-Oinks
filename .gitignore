@@ -11,14 +11,9 @@ cabal.sandbox.config
 cabal.config
 _cache
 _site
-.site3.hs
-thoughts.txt
-thoughts2.txt
-.parametric_equations.txt
 update.sh
-updateposts.sh
 site
 Computer\ Modern/
 js/MathBox.js/.DS_Store
 comments/.sass-cache
-tomato_experiment_consent_form.md
+other/
