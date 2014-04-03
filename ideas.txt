@@ -97,12 +97,16 @@ Ideas for topics to post about:
 ===============
 Specific posts:
 
-* Hello, World!
+[x] Hello, World!
+[x] Using Stanford servers - how to install without sudo access
+[x] Tomato experiment
+[] Minerva weekend
+[] self confidence in programming
+[] flying!
 * Blog setup - hakyll & bootstrap; people discouraging me but satisfaction of building myself
 * How great Double Union is; GPG Keys and Tea Party!
 * Dario math birthday cookies
 * Magic of UNIX and IRC 
-* Using Stanford servers - how to install without sudo access
 * neural nets for the uninitiated
 * heurisitcs for neural nets
 * kaggle
@@ -116,3 +120,5 @@ Specific posts:
 * not getting into ivy leagues
 * why college is not worth debt when financially independent
 * where do groups come from? (category theory)
+* how to solve the gender issue (cssi essay - eliana_lorch_essay.pdf)
+* zooniverse project
