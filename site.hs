@@ -22,6 +22,7 @@ main = hakyll $ do
 
     -- Static files
     match ("js/*" 
+            .||. "favicon.ico"
             .||. "bootstrap/js/*" 
             .||. "bootstrap/fonts/*" 
             .||. "images/*"
@@ -34,10 +35,6 @@ main = hakyll $ do
             .||. "posts/**" .&&. (complement "posts/*/*.md")) $ do
         route idRoute
         compile copyFileCompiler
-
-    match "favicon.ico" $ do
-            route   idRoute
-            compile copyFileCompiler
 
     match (fromList ["about.rst", "contact.md"]) $ do
         route   $ setExtension ".html"
