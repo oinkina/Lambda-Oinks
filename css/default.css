@@ -111,15 +111,22 @@ nav {
 
 .centerimgcontainer {
     width: 350px;
-    height: 350px;
+    height: auto;
     margin: 30px auto 0px;
+    display: block;
+}
+
+.bigcenterimgcontainer {
+    width: 70%;
+    height: auto;
+    margin: 30px auto;
     display: block;
 }
 
 /* To float right, include <div class="spaceafterimg"></div>*/
 .floatrightimgcontainer {
     width: 200px;
-    height: 200px;
+    height: auto;
     margin: 0px 0px 30px 30px;
     float: right;
 }
