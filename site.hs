@@ -4,7 +4,8 @@ import           Data.Monoid            (mappend,(<>),mconcat)
 import           Hakyll
 import qualified Data.Map as M
 import           Text.Pandoc.Options
-import           Data.Maybe (fromMaybe)
+import           Data.Maybe (fromMaybe, isJust)
+import           Control.Monad (filterM)
 --------------------------------------------------------------------------------
 -----RULES-----
 
@@ -53,7 +54,7 @@ main = hakyll $ do
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
 
             let archiveCtx =
                     listField "posts" (postCtx) (return posts)
@@ -70,7 +71,7 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
             
             let indexCtx =
                     listField "posts" (postCtx) (return posts)
@@ -109,6 +110,13 @@ urlstripCtx = field "url" $ \item -> do
     route <- getRoute (itemIdentifier item)
     return $ fromMaybe "/" $ 
         fmap (reverse . drop 10 . reverse) route
+
+-- For filtering lists of items to only be published items
+onlyPublished :: MonadMetadata m => [Item a] -> m [Item a]
+onlyPublished = filterM isPublished where
+    isPublished item = do
+        pubfield <- getMetadataField (itemIdentifier item) "published"
+        return (isJust pubfield)
 
 myReaderOptions :: ReaderOptions
 myReaderOptions = defaultHakyllReaderOptions
