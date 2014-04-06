@@ -24,11 +24,14 @@ git push origin master
 )
 
 rm -rf ~/lambda-oinks/posts/$1
-hub submodule add lambda-oinks/$1 $DIR
+git submodule add -b master git@github.com:lambda-oinks/$1 $DIR
 git commit -a -m "added new post submodule: $DIR"
 git push origin master
-git remote set-url origin git@github.com:lambda-oinks/$1
 )
+
+#(cd ~/lambda-oinks/posts/$DIR
+#git remote add origin git@github.com:lambda-oinks/$1
+#)
 
 (cd ~/lambda-oinks
 git add .
