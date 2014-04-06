@@ -18,6 +18,7 @@ echo "mathjax: on" >> index.md
 echo "---" >> index.md
 git add index.md
 git commit -a -m "initialized with template for index.md"
+git push origin master
 )
 
 rm -rf ~/lambda-oinks/posts/$1
