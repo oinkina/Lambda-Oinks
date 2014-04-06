@@ -6,6 +6,7 @@
 DIR=`date +%F`-$1
 
 hub create lambda-oinks/$1
+sleep 60
 
 (cd ~/lambda-oinks/posts
 git clone lambda-oinks/$1
