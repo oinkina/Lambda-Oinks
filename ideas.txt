@@ -3,8 +3,17 @@
 * kissmetrics
 * google analytics
 
-===========
+
 submodules for posts
+===========
+hub
+------------
+git create lambda-oinks/[REPO NAME]
+
+
+
+else
+------------
 * to write a new post, make a repo on github in the lambda-oinks organization
 * in posts/, git submodule add (ssh-url dir-name-locally) 
 ** within posts/ git push origin master
