@@ -9,7 +9,7 @@ hub create lambda-oinks/$1
 sleep 60
 
 (cd ~/lambda-oinks/posts
-git clone lambda-oinks/$1
+hub clone lambda-oinks/$1
 
 (cd $1
 echo "---" >> index.md
