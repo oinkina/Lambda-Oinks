@@ -2,6 +2,7 @@
 
 # Requires hub: brew install hub; alias git=hub
 # to run: ./newpost [REPO NAME] [POST TITLE]
+
 DIR=`date +%F`-$1
 
 hub create lambda-oinks/$1
