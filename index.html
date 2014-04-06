@@ -2,18 +2,28 @@
 title: Lambda Oinks
 ---
 
-<!-- <h2>Welcome</h2> -->
-<!--<style>
-	html{
-		background: url("/images/fire1.jpg");
-	}
-</style>-->
+<html>
+	<style>
+		body {
+	        background: url('/images/grass.jpg') no-repeat center center fixed;
+	        -moz-background-size: cover;
+	        -webkit-background-size: cover;
+	        -o-background-size: cover;
+	        background-size: cover;
+	    }
+	    #indexcontainer {
+	    	
+	    }
+	</style>
 
-<!--<img src="/images/fire1.jpg" id="full-screen-background-image" />-->
+	<body>
+		<div id="indexcontainer">
+			<p>This is a blog for all things lambda and oinks.</p>
 
-<p>This is a blog for all things lambda and oinks.</p>
+			<h2>Posts</h2>
+			$partial("templates/post-list.html")$
 
-<h2>Posts</h2>
-$partial("templates/post-list.html")$
-
-<p><a href="/archive.html">Read more.</a>
+			<p><a href="/archive.html">Read more.</a>
+		</div>
+	</body>
+</html>

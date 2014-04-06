@@ -39,6 +39,15 @@ div.info {
     font-style: italic;
 }
 
+/* just as template:
+#backgroundimg {
+        background: url('/images/grass.jpg') no-repeat center center fixed;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+*/
 
 #full-screen-background-image {
     z-index: -999;
