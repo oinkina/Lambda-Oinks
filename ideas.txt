@@ -4,14 +4,6 @@
 * google analytics
 
 
-submodules for posts
-===========
-hub
-------------
-git create lambda-oinks/[REPO NAME]
-
-
-
 else
 ------------
 * to write a new post, make a repo on github in the lambda-oinks organization
