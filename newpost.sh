@@ -6,7 +6,7 @@
 DIR=`date +%F`-$1
 
 hub create lambda-oinks/$1
-sleep 10
+sleep 3
 
 (cd ~/lambda-oinks/posts
 hub clone lambda-oinks/$1
@@ -27,6 +27,7 @@ rm -rf ~/lambda-oinks/posts/$1
 hub submodule add lambda-oinks/$1 $DIR
 git commit -a -m "added new post submodule: $DIR"
 git push origin master
+git remote set-url origin git@github.com:lambda-oinks/$1
 )
 
 (cd ~/lambda-oinks
