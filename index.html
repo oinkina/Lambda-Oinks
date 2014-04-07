@@ -2,31 +2,9 @@
 title: Lambda Oinks
 ---
 
-<html>
-	<style>
-		body {
-	        background: url('/images/grass.jpg') no-repeat center center fixed;
-	        -moz-background-size: cover;
-	        -webkit-background-size: cover;
-	        -o-background-size: cover;
-	        background-size: cover;
-	    }
-	    #indexcontainer {
-	    	background-color: rgba(245,245,245,.5);
-		}
-	    #footer {
-	    	opacity: 0; 
-	    }
-	</style>
+<p>This is a blog for all things lambda and oinks.</p>
 
-	<body>
-		<div id="indexcontainer">
-			<p>This is a blog for all things lambda and oinks.</p>
+<h2>Posts</h2>
+$partial("templates/post-list.html")$
 
-			<h2>Posts</h2>
-			$partial("templates/post-list.html")$
-
-			<p><a href="/archive.html">Read more.</a>
-		</div>
-	</body>
-</html>
+<p><a href="/archive.html">Read more.</a>

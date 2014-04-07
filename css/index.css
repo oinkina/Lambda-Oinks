@@ -1,0 +1,18 @@
+body {
+    background: url('/images/grass.jpg') no-repeat center center fixed;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#indexwrapper {
+	background-color: rgba(245,245,245,.4);
+}
+
+a:hover{
+	color:black;
+}
+
+.container{
+	height:100%;
+}

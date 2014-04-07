@@ -82,7 +82,7 @@ main = hakyll $ do
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
+                >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
