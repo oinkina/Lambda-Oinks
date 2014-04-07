@@ -40,3 +40,8 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+#home {
+  margin-top:4px;
+  font-size:22px;
+}
