@@ -16,7 +16,6 @@ echo "---" >> index.md
 echo "title: $2" >> index.md
 echo "date: `date +%F`" >> index.md
 echo "author: Oinkina" >> index.md
-echo "mathjax: on" >> index.md
 echo "---" >> index.md
 git add index.md
 git commit -a -m "initialized with template for index.md"
