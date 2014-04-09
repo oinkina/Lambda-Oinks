@@ -35,6 +35,13 @@ h3 {
     margin-bottom: 20px;
 }
 
+h4 {
+    font-weight: bold;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
 div.info {
     color: #555;
     font-style: italic;
