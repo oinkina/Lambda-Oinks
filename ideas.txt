@@ -4,6 +4,58 @@
 * google analytics
 
 
+Styling
+-----------
+
+Bootstrap adds an ease of elegance with the nav bar and gridding system, and I style the posts to be reminiscent of beautiful LaTeX PDFs. 
+
+### Bootstrap
+
+
+Workflow
+--------
+
+### Git submodules
+
+### New post and update scripts
+
+
+Outline
+--------
+
+[] Hakyll
+    * Posts for folders
+    * Automatic Updates (./update.sh)
+* Bootstrap
+    * Nav bar
+    * Sticky footer
+    * Two columns
+* Styling
+    * Latex 
+        * Fonts
+        * Headers
+            * bolded
+            * size
+            * space between
+    * Feynman-Lecture style TOC
+    * Mobile-friendly
+        * Justifies when tablet sized or larger
+        * Footer is tall enough for second line
+    * Images
+* Support for good blog stuff
+    * Support for Code (Highlight.js)
+    [] Support for Equations (MathJax)
+    [] 3D Math Graphics (MathBox.js)
+    * Comments (Disqus)
+    * Floating Footnotes (Footnotes.js)
+    * Teasers
+    * Tags
+    * TOC
+    * Google Analytics
+
+----
+
+
 else
 ------------
 * to write a new post, make a repo on github in the lambda-oinks organization
