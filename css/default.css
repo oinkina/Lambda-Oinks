@@ -156,3 +156,9 @@ img {
     font-size: 95%;
     text-align: center;
 }
+
+.mathbox{
+    width: 100%; 
+    height: 500px;
+    seamless: "seamless";
+}

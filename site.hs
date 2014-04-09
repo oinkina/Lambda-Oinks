@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid            (mappend,(<>),mconcat)
+import           Data.Monoid            ((<>))
 import           Hakyll
 import qualified Data.Map as M
 import           Text.Pandoc.Options
