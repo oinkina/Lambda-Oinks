@@ -49,7 +49,7 @@ main = hakyll $ do
         compile $ pandocCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> postCtx)
+            >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -101,9 +101,7 @@ postCtx =
 mathCtx :: Context String
 mathCtx = field "mathjax" $ \item -> do
     metadata <- getMetadata $ itemIdentifier item
-    return $ if "mathjax" `M.member` metadata
-             then "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
-             else ""
+    return $ "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
 
 -- Gets rid of "/index.html" from posts
 urlstripCtx :: Context a
