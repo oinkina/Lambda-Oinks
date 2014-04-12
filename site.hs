@@ -13,8 +13,8 @@ main :: IO ()
 main = hakyll $ do
 
     -- Compress CSS
-    match ("css/*" 
-            .||. "bootstrap/css/*" 
+    match ("css/*"
+            .||. "bootstrap/css/*"
             .||. "highlight/styles/*"
             .||. "fonts/Serif/cmun-serif.css"
             .||. "fonts/Serif Slanted/cmun-serif-slanted.css") $ do
@@ -22,12 +22,13 @@ main = hakyll $ do
         compile compressCssCompiler
 
     -- Static files
-    match ("js/*" 
+    match ("js/*"
             .||. "favicon.ico"
-            .||. "bootstrap/js/*" 
-            .||. "bootstrap/fonts/*" 
+            .||. "bower_components/**"
+            .||. "bootstrap/js/*"
+            .||. "bootstrap/fonts/*"
             .||. "images/*"
-            .||. "images/highlight/*" 
+            .||. "images/highlight/*"
             .||. "highlight/highlight.pack.js"
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
@@ -73,7 +74,7 @@ main = hakyll $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
-            
+
             let indexCtx =
                     listField "posts" (postCtx) (return posts)
                     <> constField "title" "Home"
@@ -107,7 +108,7 @@ mathCtx = field "mathjax" $ \item -> do
 urlstripCtx :: Context a
 urlstripCtx = field "url" $ \item -> do
     route <- getRoute (itemIdentifier item)
-    return $ fromMaybe "/" $ 
+    return $ fromMaybe "/" $
         fmap (reverse . drop 10 . reverse) route
 
 -- For filtering lists of items to only be published items
