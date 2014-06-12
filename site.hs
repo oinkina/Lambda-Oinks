@@ -102,7 +102,7 @@ mathCtx :: Context String
 mathCtx = field "mathjax" $ \item -> do
     metadata <- getMetadata $ itemIdentifier item
     return $ "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>"
-
+    
 -- Gets rid of "/index.html" from posts
 urlstripCtx :: Context a
 urlstripCtx = field "url" $ \item -> do
