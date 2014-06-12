@@ -40,13 +40,13 @@ main = hakyll $ do
     match "pages/*.md" $ do
         route   $ gsubRoute "pages/" (const "") `composeRoutes`
                   setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith myReaderOptions myWriterOptions
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
     match "posts/*/index.md" $ do
         route $ setExtension ".html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith myReaderOptions myWriterOptions
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -116,3 +116,14 @@ onlyPublished = filterM isPublished where
     isPublished item = do
         pubfield <- getMetadataField (itemIdentifier item) "published"
         return (isJust pubfield)
+
+myReaderOptions :: ReaderOptions
+myReaderOptions = defaultHakyllReaderOptions
+
+myWriterOptions :: WriterOptions
+myWriterOptions = defaultHakyllWriterOptions {
+      writerReferenceLinks = True
+    , writerHtml5 = True
+    , writerHighlight = True
+    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+    }
