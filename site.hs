@@ -68,6 +68,14 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" archiveCtx
                 >>= relativizeUrls
 
+    create ["rss.xml"] $ do
+        route idRoute
+        compile $ do
+            let feedCtx = postCtx 
+                    <> constField "description" ""
+
+            posts <- fmap (take 10) . recentFirst =<< onlyPublished =<< loadAll "posts/*"
+            renderRss myFeedConfiguration feedCtx posts
 
     match "index.html" $ do
         route idRoute
@@ -86,6 +94,7 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
+
 
 --------------------------------------------------------------------------------
 ----- CONTEXTS ------
@@ -127,3 +136,17 @@ myWriterOptions = defaultHakyllWriterOptions {
     , writerHighlight = True
     , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
     }
+
+----- RSS FEED ------
+
+myFeedConfiguration :: FeedConfiguration
+myFeedConfiguration = FeedConfiguration
+    { feedTitle       = "Lambda Oinks"
+    , feedDescription = "A blog for all things lambda and oinks."
+    , feedAuthorName  = "Oinkina"
+    , feedAuthorEmail = "lambdaoinks@gmail.com"
+    , feedRoot        = "http://oinkina.github.io"
+    }
+
+
+
