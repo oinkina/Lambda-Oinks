@@ -10,7 +10,7 @@ import           Control.Monad (filterM)
 -----RULES-----
 
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith config $ do
 
     -- Compress CSS
     match ("css/*" 
@@ -33,20 +33,20 @@ main = hakyll $ do
             .||. "fonts/Serif-Slanted/*"
             .||. "comments/*"
             .||. "js/MathBox.js/**"
-            .||. "posts/**" .&&. (complement "posts/*/*.md")) $ do
+            .||. "posts/**" .&&. (complement postPattern)) $ do
         route idRoute
         compile copyFileCompiler
 
     match "pages/*.md" $ do
         route   $ gsubRoute "pages/" (const "") `composeRoutes`
                   setExtension "html"
-        compile $ pandocCompilerWith myReaderOptions myWriterOptions
+        compile $ myPandoc
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
-    match "posts/*/index.md" $ do
+    match postPattern $ do
         route $ setExtension ".html"
-        compile $ pandocCompilerWith myReaderOptions myWriterOptions
+        compile $ myPandoc
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -55,7 +55,7 @@ main = hakyll $ do
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
 
             let archiveCtx =
                     listField "posts" (postCtx) (return posts)
@@ -80,7 +80,7 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
             
             let indexCtx =
                     listField "posts" (postCtx) (return posts)
@@ -94,7 +94,6 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
-
 
 --------------------------------------------------------------------------------
 ----- CONTEXTS ------
@@ -126,19 +125,10 @@ onlyPublished = filterM isPublished where
         pubfield <- getMetadataField (itemIdentifier item) "published"
         return (isJust pubfield)
 
-myReaderOptions :: ReaderOptions
-myReaderOptions = defaultHakyllReaderOptions
+--------------------------------------------------------------------------------
+----- CONFIGS ------
 
-myWriterOptions :: WriterOptions
-myWriterOptions = defaultHakyllWriterOptions {
-      writerReferenceLinks = True
-    , writerHtml5 = True
-    , writerHighlight = True
-    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
-    }
-
------ RSS FEED ------
-
+-- RSS feed -- 
 myFeedConfiguration :: FeedConfiguration
 myFeedConfiguration = FeedConfiguration
     { feedTitle       = "Lambda Oinks"
@@ -148,5 +138,17 @@ myFeedConfiguration = FeedConfiguration
     , feedRoot        = "http://oinkina.github.io"
     }
 
+-- Deploy blog with: ./site deploy --
+config = defaultConfiguration { deployCommand = "./update.sh" }
 
+myWriterOptions :: WriterOptions
+myWriterOptions = defaultHakyllWriterOptions {
+                      writerReferenceLinks = True
+                    , writerHtml5 = True
+                    , writerHighlight = True
+                    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+                    }
 
+myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
+
+postPattern = "posts/*/index.md"
