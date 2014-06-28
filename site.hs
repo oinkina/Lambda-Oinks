@@ -73,37 +73,24 @@ main = hakyllWith config $ do
               >>= loadAndApplyTemplate "templates/default.html" taggedCtx
               >>= relativizeUrls
 
-    -- Create blog index page (archive)
-    create ["blog.html"] $ do
+    -- Function to create home page and blog index page (archive)
+    let createPage path title template1 template2 = create [path] $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
 
-            let blogCtx =
+            let pageCtx =
                     listField "posts" taggedCtx (return posts)
-                 <> constField "title" "Blog"
+                 <> constField "title" title
                  <> siteCtx
 
             makeItem ""
-                >>= loadAndApplyTemplate "templates/blog.html" blogCtx
-                >>= loadAndApplyTemplate "templates/default.html" blogCtx
+                >>= loadAndApplyTemplate template1 pageCtx
+                >>= loadAndApplyTemplate template2 pageCtx
                 >>= relativizeUrls
 
-    -- Compile home page
-    create ["index.html"] $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
-            
-            let indexCtx =
-                    listField "posts" taggedCtx (return posts)
-                 <> constField "title" "Home"
-                 <> siteCtx
-
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/home.html" indexCtx
-                >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
-                >>= relativizeUrls
+    createPage "blog.html" "Blog" "templates/blog.html" "templates/default.html"
+    createPage "index.html" "Home" "templates/home.html" "templates/index_template.html"
 
     -- Create tag pages
     tagsRules tags $ \tag pattern -> do
@@ -122,17 +109,6 @@ main = hakyllWith config $ do
 -------------------------------------------------------------------------------
 ----- CONTEXTS ------
 
-siteCtx :: Context String
-siteCtx = defaultContext
-       <> mathCtx
-       <> constField "blogName" Config.name
-
-postCtx :: Tags -> Context String
-postCtx tags = dateField "date" "%B %e, %Y"
-            <> tagsField "tags" tags
-            <> urlstripCtx
-            <> siteCtx
-
 -- MathJax
 mathCtx :: Context String
 mathCtx = field "mathjax" $ \item -> do
@@ -145,6 +121,17 @@ urlstripCtx = field "url" $ \item -> do
     route <- getRoute (itemIdentifier item)
     return $ fromMaybe "/" $ 
         fmap (reverse . drop 10 . reverse) route
+
+siteCtx :: Context String
+siteCtx = defaultContext
+       <> mathCtx
+       <> constField "blogName" Config.name
+
+postCtx :: Tags -> Context String
+postCtx tags = dateField "date" "%B %e, %Y"
+            <> tagsField "tags" tags
+            <> urlstripCtx
+            <> siteCtx
 
 --------------------------------------------------------------------------------
 ----- HELPER FUNCTIONS ------
@@ -163,8 +150,7 @@ postList tags pattern sortFilter = do
     itemTemplate <- loadBody "templates/postlink.html"
     applyTemplateList itemTemplate (postCtx tags) posts
 
--- Creates a page with a list of posts in it. 
--- We use this for tagged posts pages. 
+-- Creates a page with a list of posts in it; used for tagged posts pages. 
 makeListPage :: Tags -> Pattern -> String -> Compiler (Item String)
 makeListPage tags pattern title = do
     let listCtx = field "postlist"   (\_ -> postList tags pattern postFilter)
