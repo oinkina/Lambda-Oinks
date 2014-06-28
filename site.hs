@@ -82,18 +82,14 @@ main = hakyllWith config $ do
         route   $ gsubRoute " " (const "_") `composeRoutes` setExtension ".html"
         compile $ makeListPage tags pattern (capitalized tag ++ " Posts")
 
-        {--version "rss" $ do
+        version "rss" $ do
             route   $ setExtension "xml"
-            compile $ makeRssFeed tags pattern--}
+            compile $ makeRssFeed tags pattern
 
+    -- Create RSS feed
     create ["rss.xml"] $ do
         route idRoute
-        compile $ do
-            let feedCtx = postCtx tags
-                    <> constField "description" ""
-
-            posts <- fmap (take 10) . recentFirst =<< onlyPublished =<< loadAll "posts/*"
-            renderRss myFeedConfiguration feedCtx posts
+        compile $ makeRssFeed tags postPattern
 
     match "index.html" $ do
         route idRoute
@@ -137,6 +133,9 @@ urlstripCtx = field "url" $ \item -> do
     return $ fromMaybe "/" $ 
         fmap (reverse . drop 10 . reverse) route
 
+--------------------------------------------------------------------------------
+----- HELPER FUNCTIONS ------
+
 -- For filtering lists of items to only be published items
 onlyPublished :: MonadMetadata m => [Item a] -> m [Item a]
 onlyPublished = filterM isPublished where
@@ -170,12 +169,30 @@ makeListPage tags pattern title = do
         >>= loadAndApplyTemplate "templates/default.html" listCtx
         >>= relativizeUrls
 
+-- Create an RSS feed for a list of posts.
+makeRssFeed :: Tags
+            -> Pattern
+            -> Compiler (Item String)
+makeRssFeed tags pattern = do
+    let feedCtx = postCtx tags <> bodyField "description"
+    loadAllSnapshots pattern "content"
+        >>= fmap (take 10) . recentFirst
+        >>= renderRss feedConfig feedCtx
+
+-- Capitalization for tags
+capitalizedWord :: String -> String
+capitalizedWord (head:tail) = Char.toUpper head : map Char.toLower tail
+capitalizedWord [] = []
+
+capitalized :: String -> String
+capitalized = unwords . map capitalizedWord . words
+
 --------------------------------------------------------------------------------
 ----- CONFIGS ------
 
 -- RSS feed -- 
-myFeedConfiguration :: FeedConfiguration
-myFeedConfiguration = FeedConfiguration
+feedConfig :: FeedConfiguration
+feedConfig = FeedConfiguration
     { feedTitle       = "Lambda Oinks"
     , feedDescription = "A blog for all things lambda and oinks."
     , feedAuthorName  = "Oinkina"
@@ -199,10 +216,3 @@ myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
 postPattern = "posts/*/index.md"
 
 postFilter x = recentFirst =<< onlyPublished x
-
-capitalizedWord :: String -> String
-capitalizedWord (head:tail) = Char.toUpper head : map Char.toLower tail
-capitalizedWord [] = []
-
-capitalized :: String -> String
-capitalized = unwords . map capitalizedWord . words
