@@ -7,6 +7,8 @@ import           Text.Pandoc.Options
 import           Data.Maybe (fromMaybe, isJust)
 import           Control.Monad (filterM)
 import qualified Data.Char as Char
+
+import           Config as Config
 --------------------------------------------------------------------------------
 -----RULES-----
 
@@ -38,6 +40,11 @@ main = hakyllWith config $ do
         route idRoute
         compile copyFileCompiler
 
+    -- Move favicon to root
+    match "images/favicon.ico" $ do
+        route $ constRoute "favicon.ico" 
+        compile copyFileCompiler
+
     -- Compile templates
     match "templates/*" $ compile templateCompiler
 
@@ -50,7 +57,7 @@ main = hakyllWith config $ do
             >>= loadAndApplyTemplate "templates/default.html" 
                 (mathCtx 
               <> defaultContext 
-              <> constField "blogName" blogName)
+              <> constField "blogName" Config.name)
             >>= relativizeUrls
 
     match postPattern $ do
@@ -86,7 +93,7 @@ main = hakyllWith config $ do
             let archiveCtx =
                     listField "posts" (postCtx tags) (return posts)
                  <> constField "title" "Archives"
-                 <> constField "blogName" blogName
+                 <> constField "blogName" Config.name
                  <> mathCtx
                  <> defaultContext
 
@@ -103,7 +110,7 @@ main = hakyllWith config $ do
             let indexCtx =
                     listField "posts" (postCtx tags) (return posts)
                  <> constField "title" "Home"
-                 <> constField "blogName" blogName
+                 <> constField "blogName" Config.name
                  <> mathCtx
                  <> defaultContext
 
@@ -120,7 +127,7 @@ main = hakyllWith config $ do
 
 postCtx :: Tags -> Context String
 postCtx tags = dateField "date" "%B %e, %Y"
-            <> constField "blogName" blogName
+            <> constField "blogName" Config.name
             <> tagsField "tags" tags
             <> mathCtx
             <> urlstripCtx
@@ -168,7 +175,7 @@ makeListPage :: Tags
 makeListPage tags pattern title = do
     let listCtx = field "postlist"      (\_ -> postList tags pattern postFilter)
                <> constField "title"    title
-               <> constField "blogName" blogName
+               <> constField "blogName" Config.name
                <> mathCtx
                <> defaultContext
     makeItem ""
@@ -197,18 +204,8 @@ capitalized = unwords . map capitalizedWord . words
 --------------------------------------------------------------------------------
 ----- CONFIGS ------
 
--- RSS feed -- 
-feedConfig :: FeedConfiguration
-feedConfig = FeedConfiguration
-    { feedTitle       = blogName
-    , feedDescription = "A blog for all things lambda and oinks."
-    , feedAuthorName  = "Oinkina"
-    , feedAuthorEmail = "lambdaoinks@gmail.com"
-    , feedRoot        = "http://oinkina.github.io/"
-    }
-
 -- Deploy blog with: ./site deploy --
-config = defaultConfiguration { deployCommand = "./update.sh" }
+config = defaultConfiguration { deployCommand = Config.deploy }
 
 myWriterOptions :: WriterOptions
 myWriterOptions = defaultHakyllWriterOptions {
@@ -220,8 +217,15 @@ myWriterOptions = defaultHakyllWriterOptions {
 
 myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
 
+-- RSS feed -- 
+feedConfig :: FeedConfiguration
+feedConfig = FeedConfiguration
+    { feedTitle       = Config.name
+    , feedDescription = Config.description
+    , feedAuthorName  = Config.author
+    , feedAuthorEmail = Config.email
+    , feedRoot        = Config.url
+    }
+
 postPattern = "posts/*/index.md"
-
 postFilter x = recentFirst =<< onlyPublished x
-
-blogName = "Lambda Oinks"
