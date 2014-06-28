@@ -61,6 +61,20 @@ main = hakyllWith config $ do
                 >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
                 >>= relativizeUrls
 
+    -- Create tag pages
+    tagsRules tags $ \tag pattern -> do
+        route   $ gsubRoute " " (const "_") `composeRoutes` setExtension ".html"
+        compile $ makeListPage tags pattern (capitalized tag ++ " Posts")
+
+        version "rss" $ do
+            route   $ setExtension "xml"
+            compile $ makeRssFeed tags pattern
+
+    -- Create RSS feed
+    create ["rss.xml"] $ do
+        route idRoute
+        compile $ makeRssFeed tags postPattern
+
     create ["archive.html"] $ do
         route idRoute
         compile $ do
@@ -76,20 +90,6 @@ main = hakyllWith config $ do
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
                 >>= loadAndApplyTemplate "templates/default.html" archiveCtx
                 >>= relativizeUrls
-
-    -- Create tag pages
-    tagsRules tags $ \tag pattern -> do
-        route   $ gsubRoute " " (const "_") `composeRoutes` setExtension ".html"
-        compile $ makeListPage tags pattern (capitalized tag ++ " Posts")
-
-        version "rss" $ do
-            route   $ setExtension "xml"
-            compile $ makeRssFeed tags pattern
-
-    -- Create RSS feed
-    create ["rss.xml"] $ do
-        route idRoute
-        compile $ makeRssFeed tags postPattern
 
     match "index.html" $ do
         route idRoute
@@ -176,7 +176,7 @@ makeRssFeed :: Tags
 makeRssFeed tags pattern = do
     let feedCtx = postCtx tags <> bodyField "description"
     loadAllSnapshots pattern "content"
-        >>= fmap (take 10) . recentFirst
+        >>= fmap (take 10) . postFilter
         >>= renderRss feedConfig feedCtx
 
 -- Capitalization for tags
@@ -197,7 +197,7 @@ feedConfig = FeedConfiguration
     , feedDescription = "A blog for all things lambda and oinks."
     , feedAuthorName  = "Oinkina"
     , feedAuthorEmail = "lambdaoinks@gmail.com"
-    , feedRoot        = "http://oinkina.github.io"
+    , feedRoot        = "http://oinkina.github.io/"
     }
 
 -- Deploy blog with: ./site deploy --
