@@ -1,8 +1,13 @@
+DO NEXT:
+* Cloud of tags
+* Categories of tags
+* TOC
+
+
 * mixpanel
 * liveperson
 * kissmetrics
 * google analytics
-
 
 Styling
 -----------
@@ -158,10 +163,10 @@ Specific posts:
 [x] Hello, World!
 [x] Using Stanford servers - how to install without sudo access
 [x] Tomato experiment
+[x] Blog setup - hakyll & bootstrap; people discouraging me but satisfaction of building myself
 [] Minerva weekend
 [] self confidence in programming
 [] flying!
-* Blog setup - hakyll & bootstrap; people discouraging me but satisfaction of building myself
 * How great Double Union is; GPG Keys and Tea Party!
 * Dario math birthday cookies
 * Magic of UNIX and IRC 

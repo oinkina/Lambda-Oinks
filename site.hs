@@ -47,7 +47,10 @@ main = hakyllWith config $ do
     match "pages/*.md" $ do
         route   $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
         compile $ myPandoc
-            >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
+            >>= loadAndApplyTemplate "templates/default.html" 
+                (mathCtx 
+              <> defaultContext 
+              <> constField "blogName" blogName)
             >>= relativizeUrls
 
     match postPattern $ do
@@ -83,6 +86,7 @@ main = hakyllWith config $ do
             let archiveCtx =
                     listField "posts" (postCtx tags) (return posts)
                  <> constField "title" "Archives"
+                 <> constField "blogName" blogName
                  <> mathCtx
                  <> defaultContext
 
@@ -99,6 +103,7 @@ main = hakyllWith config $ do
             let indexCtx =
                     listField "posts" (postCtx tags) (return posts)
                  <> constField "title" "Home"
+                 <> constField "blogName" blogName
                  <> mathCtx
                  <> defaultContext
 
@@ -115,6 +120,7 @@ main = hakyllWith config $ do
 
 postCtx :: Tags -> Context String
 postCtx tags = dateField "date" "%B %e, %Y"
+            <> constField "blogName" blogName
             <> tagsField "tags" tags
             <> mathCtx
             <> urlstripCtx
@@ -160,8 +166,9 @@ makeListPage :: Tags
              -> String
              -> Compiler (Item String)
 makeListPage tags pattern title = do
-    let listCtx = field "postlist" (\_ -> postList tags pattern postFilter)
+    let listCtx = field "postlist"      (\_ -> postList tags pattern postFilter)
                <> constField "title"    title
+               <> constField "blogName" blogName
                <> mathCtx
                <> defaultContext
     makeItem ""
@@ -193,7 +200,7 @@ capitalized = unwords . map capitalizedWord . words
 -- RSS feed -- 
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration
-    { feedTitle       = "Lambda Oinks"
+    { feedTitle       = blogName
     , feedDescription = "A blog for all things lambda and oinks."
     , feedAuthorName  = "Oinkina"
     , feedAuthorEmail = "lambdaoinks@gmail.com"
@@ -216,3 +223,5 @@ myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
 postPattern = "posts/*/index.md"
 
 postFilter x = recentFirst =<< onlyPublished x
+
+blogName = "Lambda Oinks"
