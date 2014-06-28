@@ -90,8 +90,8 @@ main = hakyllWith config $ do
                 >>= relativizeUrls
 
     -- Compile home page
-    match "pages/home.html" $ do
-        route $ constRoute "index.html"
+    create ["index.html"] $ do
+        route idRoute
         compile $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
             
@@ -100,8 +100,8 @@ main = hakyllWith config $ do
                  <> constField "title" "Home"
                  <> siteCtx
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/home.html" indexCtx
                 >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
                 >>= relativizeUrls
 
