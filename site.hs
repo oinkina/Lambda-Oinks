@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Monoid            ((<>))
 import           Hakyll
@@ -9,7 +9,7 @@ import           Control.Monad (filterM)
 import qualified Data.Char as Char
 
 import           Config as Config
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -----RULES-----
 
 main :: IO ()
@@ -51,26 +51,58 @@ main = hakyllWith config $ do
     -- Build tags field
     tags <- buildTags postPattern $ fromCapture "blog/tags/*"
 
+    -- Use tags field for postCtx
+    let taggedCtx = postCtx tags
+
+    -- Compile home, about, contact
     match "pages/*.md" $ do
         route   $ gsubRoute "pages/" (const "") 
                     `composeRoutes` setExtension "html"
         compile $ myPandoc
-            >>= loadAndApplyTemplate "templates/default.html" 
-                (mathCtx 
-              <> defaultContext 
-              <> constField "blogName" Config.name)
-            >>= relativizeUrls
+              >>= loadAndApplyTemplate "templates/default.html" siteCtx
+              >>= relativizeUrls
 
+    -- Compile blog posts
     match postPattern $ do
         route $ gsubRoute "posts/" (const "blog/") 
                     `composeRoutes` setExtension "html"
+        compile $ myPandoc
+              >>= saveSnapshot "content"
+              >>= return . fmap demoteHeaders -- h1 -> h2; h2 -> h3; etc
+              >>= loadAndApplyTemplate "templates/post.html"    taggedCtx
+              >>= loadAndApplyTemplate "templates/default.html" taggedCtx
+              >>= relativizeUrls
+
+    -- Create blog index page (archive)
+    create ["blog.html"] $ do
+        route idRoute
         compile $ do
-            let context = postCtx tags
-            myPandoc
-                >>= saveSnapshot "content"
-                >>= return . fmap demoteHeaders -- h1 -> h2; h2 -> h3; etc
-                >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
-                >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
+
+            let blogCtx =
+                    listField "posts" taggedCtx (return posts)
+                 <> constField "title" "Blog"
+                 <> siteCtx
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/blog.html" blogCtx
+                >>= loadAndApplyTemplate "templates/default.html" blogCtx
+                >>= relativizeUrls
+
+    -- Compile home page
+    match "pages/home.html" $ do
+        route $ constRoute "index.html"
+        compile $ do
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
+            
+            let indexCtx =
+                    listField "posts" taggedCtx (return posts)
+                 <> constField "title" "Home"
+                 <> siteCtx
+
+            getResourceBody
+                >>= applyAsTemplate indexCtx
+                >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
                 >>= relativizeUrls
 
     -- Create tag pages
@@ -87,53 +119,19 @@ main = hakyllWith config $ do
         route idRoute
         compile $ makeRssFeed tags postPattern
 
-    create ["blog.html"] $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
-
-            let blogCtx =
-                    listField "posts" (postCtx tags) (return posts)
-                 <> constField "title" "Blog"
-                 <> constField "blogName" Config.name
-                 <> mathCtx
-                 <> defaultContext
-
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/blog.html" blogCtx
-                >>= loadAndApplyTemplate "templates/default.html" blogCtx
-                >>= relativizeUrls
-
-    match "pages/home.html" $ do
-        route $ constRoute "index.html"
-        compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
-            
-            let indexCtx =
-                    listField "posts" (postCtx tags) (return posts)
-                 <> constField "title" "Home"
-                 <> constField "blogName" Config.name
-                 <> mathCtx
-                 <> defaultContext
-
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
-                >>= relativizeUrls
-
-    return ()
-
-
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 ----- CONTEXTS ------
+
+siteCtx :: Context String
+siteCtx = defaultContext
+       <> mathCtx
+       <> constField "blogName" Config.name
 
 postCtx :: Tags -> Context String
 postCtx tags = dateField "date" "%B %e, %Y"
-            <> constField "blogName" Config.name
             <> tagsField "tags" tags
-            <> mathCtx
             <> urlstripCtx
-            <> defaultContext
+            <> siteCtx
 
 -- MathJax
 mathCtx :: Context String
@@ -159,36 +157,27 @@ onlyPublished = filterM isPublished where
         return (isJust pubfield)
 
 -- Creates a list of posts with given tags, pattern, filter.
-postList :: Tags
-         -> Pattern
-         -> ([Item String] -> Compiler [Item String])
-         -> Compiler String
+postList :: Tags -> Pattern -> ([Item String] -> Compiler [Item String]) -> Compiler String
 postList tags pattern sortFilter = do
     posts        <- sortFilter =<< loadAll pattern
     itemTemplate <- loadBody "templates/postlink.html"
     applyTemplateList itemTemplate (postCtx tags) posts
 
--- Creates a page with a list of posts in it. We use this for the main
--- blog index, as well as for the "posts tagged X" pages.
-makeListPage :: Tags
-             -> Pattern
-             -> String
-             -> Compiler (Item String)
+-- Creates a page with a list of posts in it. 
+-- We use this for tagged posts pages. 
+makeListPage :: Tags -> Pattern -> String -> Compiler (Item String)
 makeListPage tags pattern title = do
-    let listCtx = field "postlist"      (\_ -> postList tags pattern postFilter)
-               <> constField "title"    title
-               <> constField "blogName" Config.name
-               <> mathCtx
-               <> defaultContext
+    let listCtx = field "postlist"   (\_ -> postList tags pattern postFilter)
+               <> constField "title" title
+               <> siteCtx
+
     makeItem ""
         >>= loadAndApplyTemplate "templates/postlist.html" listCtx
         >>= loadAndApplyTemplate "templates/default.html" listCtx
         >>= relativizeUrls
 
 -- Create an RSS feed for a list of posts.
-makeRssFeed :: Tags
-            -> Pattern
-            -> Compiler (Item String)
+makeRssFeed :: Tags -> Pattern -> Compiler (Item String)
 makeRssFeed tags pattern = do
     let feedCtx = postCtx tags <> bodyField "description"
     loadAllSnapshots pattern "content"
