@@ -6,11 +6,12 @@ import qualified Data.Map as M
 import           Text.Pandoc.Options
 import           Data.Maybe (fromMaybe, isJust)
 import           Control.Monad (filterM)
+import qualified Data.Char as Char
 --------------------------------------------------------------------------------
 -----RULES-----
 
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith config $ do
 
     -- Compress CSS
     match ("css/*" 
@@ -33,69 +34,91 @@ main = hakyll $ do
             .||. "fonts/Serif-Slanted/*"
             .||. "comments/*"
             .||. "js/MathBox.js/**"
-            .||. "posts/**" .&&. (complement "posts/*/*.md")) $ do
+            .||. "posts/**" .&&. (complement postPattern)) $ do
         route idRoute
         compile copyFileCompiler
 
+    -- Compile templates
+    match "templates/*" $ compile templateCompiler
+
+    -- Build tags field
+    tags <- buildTags postPattern $ fromCapture "posts/tags/*"
+
     match "pages/*.md" $ do
-        route   $ gsubRoute "pages/" (const "") `composeRoutes`
-                  setExtension "html"
-        compile $ pandocCompilerWith myReaderOptions myWriterOptions
+        route   $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
+        compile $ myPandoc
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
-    match "posts/*/index.md" $ do
+    match postPattern $ do
         route $ setExtension ".html"
-        compile $ pandocCompilerWith myReaderOptions myWriterOptions
-            >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
+        compile $ do
+            let context = postCtx tags
+            myPandoc
+                >>= saveSnapshot "content"
+                >>= return . fmap demoteHeaders -- h1 -> h2; h2 -> h3; etc
+                >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
+                >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
+                >>= relativizeUrls
+
+    -- Create tag pages
+    tagsRules tags $ \tag pattern -> do
+        route   $ gsubRoute " " (const "_") `composeRoutes` setExtension ".html"
+        compile $ makeListPage tags pattern (capitalized tag ++ " Posts")
+
+        version "rss" $ do
+            route   $ setExtension "xml"
+            compile $ makeRssFeed tags pattern
+
+    -- Create RSS feed
+    create ["rss.xml"] $ do
+        route idRoute
+        compile $ makeRssFeed tags postPattern
 
     create ["archive.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
 
             let archiveCtx =
-                    listField "posts" (postCtx) (return posts)
-                    <> constField "title" "Archives"
-                    <> mathCtx
-                    <> defaultContext
+                    listField "posts" (postCtx tags) (return posts)
+                 <> constField "title" "Archives"
+                 <> mathCtx
+                 <> defaultContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
                 >>= loadAndApplyTemplate "templates/default.html" archiveCtx
                 >>= relativizeUrls
 
-
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< onlyPublished =<< loadAll "posts/*/index.md"
+            posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
             
             let indexCtx =
-                    listField "posts" (postCtx) (return posts)
-                    <> constField "title" "Home"
-                    <> mathCtx
-                    <> defaultContext
+                    listField "posts" (postCtx tags) (return posts)
+                 <> constField "title" "Home"
+                 <> mathCtx
+                 <> defaultContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
                 >>= relativizeUrls
 
-    match "templates/*" $ compile templateCompiler
+    return ()
+
 
 --------------------------------------------------------------------------------
 ----- CONTEXTS ------
 
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y"
-    <> mathCtx
-    <> urlstripCtx
-    <> defaultContext
+postCtx :: Tags -> Context String
+postCtx tags = dateField "date" "%B %e, %Y"
+            <> tagsField "tags" tags
+            <> mathCtx
+            <> urlstripCtx
+            <> defaultContext
 
 -- MathJax
 mathCtx :: Context String
@@ -110,6 +133,9 @@ urlstripCtx = field "url" $ \item -> do
     return $ fromMaybe "/" $ 
         fmap (reverse . drop 10 . reverse) route
 
+--------------------------------------------------------------------------------
+----- HELPER FUNCTIONS ------
+
 -- For filtering lists of items to only be published items
 onlyPublished :: MonadMetadata m => [Item a] -> m [Item a]
 onlyPublished = filterM isPublished where
@@ -117,13 +143,76 @@ onlyPublished = filterM isPublished where
         pubfield <- getMetadataField (itemIdentifier item) "published"
         return (isJust pubfield)
 
-myReaderOptions :: ReaderOptions
-myReaderOptions = defaultHakyllReaderOptions
+-- Creates a list of posts with given tags, pattern, filter.
+postList :: Tags
+         -> Pattern
+         -> ([Item String] -> Compiler [Item String])
+         -> Compiler String
+postList tags pattern sortFilter = do
+    posts        <- sortFilter =<< loadAll pattern
+    itemTemplate <- loadBody "templates/postlink.html"
+    applyTemplateList itemTemplate (postCtx tags) posts
+
+-- Creates a page with a list of posts in it. We use this for the main
+-- blog index, as well as for the "posts tagged X" pages.
+makeListPage :: Tags
+             -> Pattern
+             -> String
+             -> Compiler (Item String)
+makeListPage tags pattern title = do
+    let listCtx = field "postlist" (\_ -> postList tags pattern postFilter)
+               <> constField "title"    title
+               <> mathCtx
+               <> defaultContext
+    makeItem ""
+        >>= loadAndApplyTemplate "templates/postlist.html" listCtx
+        >>= loadAndApplyTemplate "templates/default.html" listCtx
+        >>= relativizeUrls
+
+-- Create an RSS feed for a list of posts.
+makeRssFeed :: Tags
+            -> Pattern
+            -> Compiler (Item String)
+makeRssFeed tags pattern = do
+    let feedCtx = postCtx tags <> bodyField "description"
+    loadAllSnapshots pattern "content"
+        >>= fmap (take 10) . postFilter
+        >>= renderRss feedConfig feedCtx
+
+-- Capitalization for tags
+capitalizedWord :: String -> String
+capitalizedWord (head:tail) = Char.toUpper head : map Char.toLower tail
+capitalizedWord [] = []
+
+capitalized :: String -> String
+capitalized = unwords . map capitalizedWord . words
+
+--------------------------------------------------------------------------------
+----- CONFIGS ------
+
+-- RSS feed -- 
+feedConfig :: FeedConfiguration
+feedConfig = FeedConfiguration
+    { feedTitle       = "Lambda Oinks"
+    , feedDescription = "A blog for all things lambda and oinks."
+    , feedAuthorName  = "Oinkina"
+    , feedAuthorEmail = "lambdaoinks@gmail.com"
+    , feedRoot        = "http://oinkina.github.io/"
+    }
+
+-- Deploy blog with: ./site deploy --
+config = defaultConfiguration { deployCommand = "./update.sh" }
 
 myWriterOptions :: WriterOptions
 myWriterOptions = defaultHakyllWriterOptions {
-      writerReferenceLinks = True
-    , writerHtml5 = True
-    , writerHighlight = True
-    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
-    }
+                      writerReferenceLinks = True
+                    , writerHtml5 = True
+                    , writerHighlight = True
+                    , writerHTMLMathMethod = MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js"
+                    }
+
+myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
+
+postPattern = "posts/*/index.md"
+
+postFilter x = recentFirst =<< onlyPublished x
