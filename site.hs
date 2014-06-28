@@ -49,10 +49,11 @@ main = hakyllWith config $ do
     match "templates/*" $ compile templateCompiler
 
     -- Build tags field
-    tags <- buildTags postPattern $ fromCapture "posts/tags/*"
+    tags <- buildTags postPattern $ fromCapture "blog/tags/*"
 
     match "pages/*.md" $ do
-        route   $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
+        route   $ gsubRoute "pages/" (const "") 
+                    `composeRoutes` setExtension "html"
         compile $ myPandoc
             >>= loadAndApplyTemplate "templates/default.html" 
                 (mathCtx 
@@ -61,7 +62,8 @@ main = hakyllWith config $ do
             >>= relativizeUrls
 
     match postPattern $ do
-        route $ setExtension ".html"
+        route $ gsubRoute "posts/" (const "blog/") 
+                    `composeRoutes` setExtension "html"
         compile $ do
             let context = postCtx tags
             myPandoc
@@ -85,21 +87,21 @@ main = hakyllWith config $ do
         route idRoute
         compile $ makeRssFeed tags postPattern
 
-    create ["archive.html"] $ do
+    create ["blog.html"] $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
 
-            let archiveCtx =
+            let blogCtx =
                     listField "posts" (postCtx tags) (return posts)
-                 <> constField "title" "Archives"
+                 <> constField "title" "Blog"
                  <> constField "blogName" Config.name
                  <> mathCtx
                  <> defaultContext
 
             makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+                >>= loadAndApplyTemplate "templates/blog.html" blogCtx
+                >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
     match "pages/home.html" $ do
