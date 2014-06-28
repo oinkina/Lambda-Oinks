@@ -6,6 +6,7 @@ import qualified Data.Map as M
 import           Text.Pandoc.Options
 import           Data.Maybe (fromMaybe, isJust)
 import           Control.Monad (filterM)
+import qualified Data.Char as Char
 --------------------------------------------------------------------------------
 -----RULES-----
 
@@ -37,20 +38,28 @@ main = hakyllWith config $ do
         route idRoute
         compile copyFileCompiler
 
+    -- Compile templates
+    match "templates/*" $ compile templateCompiler
+
+    -- Build tags field
+    tags <- buildTags postPattern $ fromCapture "posts/tags/*"
+
     match "pages/*.md" $ do
-        route   $ gsubRoute "pages/" (const "") `composeRoutes`
-                  setExtension "html"
+        route   $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
         compile $ myPandoc
             >>= loadAndApplyTemplate "templates/default.html" (mathCtx <> defaultContext)
             >>= relativizeUrls
 
     match postPattern $ do
         route $ setExtension ".html"
-        compile $ myPandoc
-            >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
+        compile $ do
+            let context = postCtx tags
+            myPandoc
+                >>= saveSnapshot "content"
+                >>= return . fmap demoteHeaders -- h1 -> h2; h2 -> h3; etc
+                >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
+                >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
+                >>= relativizeUrls
 
     create ["archive.html"] $ do
         route idRoute
@@ -58,20 +67,29 @@ main = hakyllWith config $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
 
             let archiveCtx =
-                    listField "posts" (postCtx) (return posts)
-                    <> constField "title" "Archives"
-                    <> mathCtx
-                    <> defaultContext
+                    listField "posts" (postCtx tags) (return posts)
+                 <> constField "title" "Archives"
+                 <> mathCtx
+                 <> defaultContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
                 >>= loadAndApplyTemplate "templates/default.html" archiveCtx
                 >>= relativizeUrls
 
+    -- Create tag pages
+    tagsRules tags $ \tag pattern -> do
+        route   $ gsubRoute " " (const "_") `composeRoutes` setExtension ".html"
+        compile $ makeListPage tags pattern (capitalized tag ++ " Posts")
+
+        {--version "rss" $ do
+            route   $ setExtension "xml"
+            compile $ makeRssFeed tags pattern--}
+
     create ["rss.xml"] $ do
         route idRoute
         compile $ do
-            let feedCtx = postCtx 
+            let feedCtx = postCtx tags
                     <> constField "description" ""
 
             posts <- fmap (take 10) . recentFirst =<< onlyPublished =<< loadAll "posts/*"
@@ -83,27 +101,28 @@ main = hakyllWith config $ do
             posts <- recentFirst =<< onlyPublished =<< loadAll postPattern
             
             let indexCtx =
-                    listField "posts" (postCtx) (return posts)
-                    <> constField "title" "Home"
-                    <> mathCtx
-                    <> defaultContext
+                    listField "posts" (postCtx tags) (return posts)
+                 <> constField "title" "Home"
+                 <> mathCtx
+                 <> defaultContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/index_template.html" indexCtx
                 >>= relativizeUrls
 
-    match "templates/*" $ compile templateCompiler
+    return ()
+
 
 --------------------------------------------------------------------------------
 ----- CONTEXTS ------
 
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y"
-    <> mathCtx
-    <> urlstripCtx
-    <> defaultContext
+postCtx :: Tags -> Context String
+postCtx tags = dateField "date" "%B %e, %Y"
+            <> tagsField "tags" tags
+            <> mathCtx
+            <> urlstripCtx
+            <> defaultContext
 
 -- MathJax
 mathCtx :: Context String
@@ -124,6 +143,32 @@ onlyPublished = filterM isPublished where
     isPublished item = do
         pubfield <- getMetadataField (itemIdentifier item) "published"
         return (isJust pubfield)
+
+-- Creates a list of posts with given tags, pattern, filter.
+postList :: Tags
+         -> Pattern
+         -> ([Item String] -> Compiler [Item String])
+         -> Compiler String
+postList tags pattern sortFilter = do
+    posts        <- sortFilter =<< loadAll pattern
+    itemTemplate <- loadBody "templates/postlink.html"
+    applyTemplateList itemTemplate (postCtx tags) posts
+
+-- Creates a page with a list of posts in it. We use this for the main
+-- blog index, as well as for the "posts tagged X" pages.
+makeListPage :: Tags
+             -> Pattern
+             -> String
+             -> Compiler (Item String)
+makeListPage tags pattern title = do
+    let listCtx = field "postlist" (\_ -> postList tags pattern postFilter)
+               <> constField "title"    title
+               <> mathCtx
+               <> defaultContext
+    makeItem ""
+        >>= loadAndApplyTemplate "templates/postlist.html" listCtx
+        >>= loadAndApplyTemplate "templates/default.html" listCtx
+        >>= relativizeUrls
 
 --------------------------------------------------------------------------------
 ----- CONFIGS ------
@@ -152,3 +197,12 @@ myWriterOptions = defaultHakyllWriterOptions {
 myPandoc = pandocCompilerWith defaultHakyllReaderOptions myWriterOptions
 
 postPattern = "posts/*/index.md"
+
+postFilter x = recentFirst =<< onlyPublished x
+
+capitalizedWord :: String -> String
+capitalizedWord (head:tail) = Char.toUpper head : map Char.toLower tail
+capitalizedWord [] = []
+
+capitalized :: String -> String
+capitalized = unwords . map capitalizedWord . words
