@@ -26,15 +26,12 @@ main = hakyllWith config $ do
 
     -- Static files
     match ("js/*" 
-            .||. "favicon.ico"
             .||. "bootstrap/js/*" 
             .||. "bootstrap/fonts/*" 
-            .||. "images/*"
-            .||. "images/highlight/*" 
+            .||. "images/*" 
             .||. "highlight/highlight.pack.js"
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
-            .||. "comments/*"
             .||. "js/MathBox.js/**"
             .||. "posts/**" .&&. (complement postPattern)) $ do
         route idRoute
