@@ -1,3 +1,7 @@
 [submodule "posts"]
 	path = posts
 	url = git@github.com:oinkina/lambda-oinks-posts.git
+[submodule "blog"]
+	path = blog
+	url = git@github.com:oinkina/default-oinks-blog-contents.git
+	branch = master
