@@ -49,7 +49,7 @@ div.info {
 
 /* just as template:
 #backgroundimg {
-        background: url('/images/grass.jpg') no-repeat center center fixed;
+        background: url('../blog/images/grass.jpg') no-repeat center center fixed;
         -moz-background-size: cover;
         -webkit-background-size: cover;
         -o-background-size: cover;

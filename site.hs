@@ -17,8 +17,8 @@ main = hakyllWith config $ do
 
     -- Compress CSS
     match ("css/*" 
-            .||. "bootstrap/css/*" 
-            .||. "highlight/styles/*"
+            .||. "extlibs/bootstrap/css/*" 
+            .||. "extlibs/highlight/styles/*"
             .||. "fonts/Serif/cmun-serif.css"
             .||. "fonts/Serif Slanted/cmun-serif-slanted.css") $ do
         route   idRoute
@@ -26,19 +26,21 @@ main = hakyllWith config $ do
 
     -- Static files
     match ("js/*" 
-            .||. "bootstrap/js/*" 
-            .||. "bootstrap/fonts/*" 
-            .||. "images/*" 
-            .||. "highlight/highlight.pack.js"
+            .||. "extlibs/bootstrap/js/*" 
+            .||. "extlibs/bootstrap/fonts/*" 
+            .||. "extlibs/highlight/highlight.pack.js"
+            .||. "extlibs/highlight/images/*"
+            .||. "extlibs/mathbox/*"
+            .||. "extlibs/mathbox/examples/*"
+            .||. "blog/images/*" 
             .||. "fonts/Serif/*"
             .||. "fonts/Serif-Slanted/*"
-            .||. "js/MathBox.js/**"
             .||. "posts/**" .&&. (complement postPattern)) $ do
         route idRoute
         compile copyFileCompiler
 
     -- Move favicon to root
-    match "images/favicon.ico" $ do
+    match "blog/images/favicon.ico" $ do
         route $ constRoute "favicon.ico" 
         compile copyFileCompiler
 
@@ -52,7 +54,7 @@ main = hakyllWith config $ do
     let taggedCtx = postCtx tags
 
     -- Compile home, about, contact
-    match "pages/*.md" $ do
+    match "blog/pages/*.md" $ do
         route   $ gsubRoute "pages/" (const "") 
                     `composeRoutes` setExtension "html"
         compile $ myPandoc
