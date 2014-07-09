@@ -55,7 +55,7 @@ main = hakyllWith config $ do
 
     -- Compile home, about, contact
     match "blog/pages/*.md" $ do
-        route   $ gsubRoute "pages/" (const "") 
+        route   $ gsubRoute "blog/pages/" (const "") 
                     `composeRoutes` setExtension "html"
         compile $ myPandoc
               >>= loadAndApplyTemplate "templates/default.html" siteCtx
